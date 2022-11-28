@@ -1,0 +1,153 @@
+body {
+    font-family:'Courier New', Courier, monospace;
+}
+
+#gamescreen {
+    position: relative;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    height: 410px;
+    background-image: url('source/austria.png');
+    background-size: 100%;
+}
+
+#overview {
+    position: relative;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 2em;
+}
+
+#gamebuttons {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 1.5em;
+    color: rgb(201, 201, 201);
+}
+
+.button-active {
+    color: black;
+}
+
+/* station css */
+
+.stationsign {
+    position:absolute;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 8px;
+    border-color: white;
+    background-color: #B3182E;
+    z-index: 899;
+}
+
+.start-station {
+    background-color: #21B9FC;
+}
+
+.start-station-animation {
+    animation-name: pulsating-station;
+    animation-iteration-count: 8;
+    animation-duration: 900ms;
+}
+
+@keyframes pulsating-station {
+    0% {
+        transform: scale(1.0);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1.0);
+    }
+}
+
+.active-station {
+    background-color: #FCF208;
+}
+
+.chosen-station {
+    animation-play-state: paused;
+    transform: scale(1.5);
+}
+
+.station-name {
+    position: relative;
+    top: -40px;
+    right: 40px;
+    color: rgb(202, 202, 202);
+    font-size: 1.2em;
+    font-weight: bold;
+    text-shadow: #21B9FC;
+    padding: 5px;
+    padding-right: 25px;
+}
+
+.passenger-info {
+    position: relative;
+    top: 5px;
+    right: 30px;
+    background-color: white;
+    font-size: 0.9em;
+    padding: 5px;
+    width: 52px;
+}
+
+
+/* line css */
+
+.line {
+    position: absolute;
+    border-style: solid;
+    border-width: 8px;
+    border-color: white;
+    background-color: white;
+    transform-origin: left;
+    z-index: 799;
+    /* fade in line */
+    animation-name: fade-in;
+    animation-iteration-count: 1;
+    animation-duration: 500ms;
+}
+
+@keyframes fade-in{
+    from {opacity: 0;}
+    to {opacity: 1;}
+    }
+
+/* train css */
+
+.train {
+    position: absolute;
+    background-image: url('source/train.gif');
+    background-size: 100%;
+    width: 35px;
+    height: 50px;
+    z-index: 999;
+}
+
+/* train movement */
+
+.move-train-to-b {
+    animation:train-movement-to-b 5s;
+    --my-start-left-pos: 0;
+    --my-start-bottom-pos: 0px;
+    --my-end-left-pos: 0;
+    --my-end-bottom-pos: 0px;
+}
+
+@keyframes train-movement-to-b
+    {
+    0%   { left: var(--my-start-left-pos); bottom: var(--my-start-bottom-pos); transform:rotate(0deg)}
+    100% {left: var(--my-end-left-pos); bottom: var(--my-end-bottom-pos); transform:rotate(0deg)}
+    }
