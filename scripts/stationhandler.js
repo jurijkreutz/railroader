@@ -1,11 +1,14 @@
-import { newLine, currentStations, currentLines } from "./lines.js";
+import { newLine, currentLines } from "./lines.js";
 import { stationsAllowed } from "./stathandler.js";
+
+let currentClickedStations = [];
 
 export function putStationsOnMap(stationPositions, gameScreen) {
     for (const station in stationPositions) {
         const element = stationPositions[station];
         addStationToGameScreen(station, stationPositions[station], gameScreen);
     }
+
 }
 
 function addStationToGameScreen(name, position, gameScreen) {
@@ -18,7 +21,20 @@ function addStationToGameScreen(name, position, gameScreen) {
     gameScreen.append(newStation);
 }
 
-export function makeStationsClickable(stations, gameScreen, currentClickedStations) {
+function allowUserToCancelStationSelection() {
+    let unselectButton = document.getElementById("cancel-selection");
+    unselectButton.addEventListener("click", () => {
+        for (let index = 0; index < currentClickedStations.length; index++) {
+            const station = currentClickedStations[index];
+            station.classList.remove('start-station-animation');
+            station.classList.remove('chosen-station');
+        }
+        currentClickedStations = [];
+    })
+}
+
+export function makeStationsClickable(stations, gameScreen) {
+    allowUserToCancelStationSelection();
     for (const station of stations) {
         station.addEventListener("click", () => {
             if (stationsAllowed.includes(station.dataset.stationName)) {
@@ -36,6 +52,7 @@ export function makeStationsClickable(stations, gameScreen, currentClickedStatio
                     }
                     else {
                         // TODO: Implement promt: What to do if station has line already?
+                        currentClickedStations = [];
                         console.log("Has line already")
                     }
                     }

@@ -5,7 +5,6 @@ import { putStationsOnMap,
          findNearestStation,
          prepareStation } from "./stationhandler.js";
 
-
 const gameScreen = document.getElementById("gamescreen");
 export const gameSettings = {'screenHeight': window.getComputedStyle(gameScreen).height,
                              'startingStation': 'linz',
@@ -30,8 +29,7 @@ function startGame() {
     initGameButtons(gameScreen);
     const stations = document.getElementsByClassName('stationsign');
     initStationUpdate(stations);
-    const clickedStations = [];
-    makeStationsClickable(stations, gameScreen, clickedStations);
+    makeStationsClickable(stations, gameScreen);
     prepareStartStation(gameSettings.startingStation);
     let nearestStation = findNearestStation(stations, gameSettings.startingStation)
     prepareStation(nearestStation);

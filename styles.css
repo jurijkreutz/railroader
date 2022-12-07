@@ -34,6 +34,12 @@ body {
     color: black;
 }
 
+#cancel-selection {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
 /* station css */
 
 .stationsign {
