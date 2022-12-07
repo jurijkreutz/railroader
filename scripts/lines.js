@@ -31,7 +31,7 @@ export function newLine(currentClickedStations, gameScreen) {
     letTrainDrive(gameScreen, station1PositionsAndName, station2PositionsAndName, currentLines.length);
 }
 
-function saveNewLine(lineColor, currentClickedStations) {
+async function saveNewLine(lineColor, currentClickedStations) {
     let trainObject = {
         "lineId": currentLines.length+1,
         "trainId": currentTrains.length+1,
@@ -49,12 +49,20 @@ function saveNewLine(lineColor, currentClickedStations) {
     };
     currentLines.push(lineObject);
     for (let index = 0; index < currentClickedStations.length; index++) {
-        let stationObject = {
-            "name": currentClickedStations[index].dataset.stationName,
-            "line": lineColor,
-            "passengers": {}
+        let stationName = currentClickedStations[index].dataset.stationName;
+        if (await findObjectBySpecificValue(currentStations, "name", stationName) == null) {
+            let stationObject = {
+                "name": currentClickedStations[index].dataset.stationName,
+                "line": [lineColor, ],
+                "passengers": {}
+            }
+            currentStations.push(stationObject);
+            console.log(stationObject)
         }
-        currentStations.push(stationObject);
+        else {
+            let alreadyExistingStation = await findObjectBySpecificValue(currentStations, "name", stationName);
+            alreadyExistingStation["line"].push(lineColor);
+        }
     }
 }
 

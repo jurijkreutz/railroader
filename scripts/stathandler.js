@@ -54,11 +54,26 @@ function initStationPassengerInfo() {
 async function initRandomPassengerSpawning() {
     if (currentLines.length != 0) {
         let randomStation = currentStations[Math.floor(Math.random() * currentStations.length)];
-        await setDestinationsForStation(randomStation);
+        setDestinationsForStation(randomStation);
         let destinationToSpawnNewPassengerFor = randomStation["name"];
         let currentLineObject = await findObjectBySpecificValue(currentLines, "color", randomStation["line"]);
-        while (destinationToSpawnNewPassengerFor == randomStation["name"] || !(currentLineObject["stations"].includes(destinationToSpawnNewPassengerFor))) {
+
+
+        let stationLines = getStationLines(randomStation);
+        let reachableStations = [];
+        for (let lineIndex = 0; lineIndex < stationLines.length; lineIndex++) {
+            const line = stationLines[lineIndex];
+            for (let stationIndex = 0; stationIndex < line["stations"]; stationIndex++) {
+                reachableStations.push(line[stationIndex]);
+            }
+        }
+        let counter = 0;
+        while (destinationToSpawnNewPassengerFor == randomStation["name"] || !(reachableStations.includes(destinationToSpawnNewPassengerFor))) {
             destinationToSpawnNewPassengerFor = getRandomStationDestination(randomStation["passengers"]);
+            counter++;
+            if (counter == 10) {
+                break;
+            }
         }
         randomStation["passengers"][destinationToSpawnNewPassengerFor] += 1;
     }
@@ -85,14 +100,29 @@ function setSpawnSpeed() {
 }
 
 function setDestinationsForStation(station) {
-    currentStations.forEach(async destinationStation => {
-        let currentLineObject = await findObjectBySpecificValue(currentLines, "color", station["line"]);
-        if (currentLineObject["stations"].includes(destinationStation["name"])) {
-            if (!(destinationStation["name"] in station["passengers"]) && destinationStation["name"] != station["name"]) {
-                station["passengers"][destinationStation["name"]] = 0;
+    currentStations.forEach(destinationStation => {
+        let stationLines = getStationLines(station);
+        for (let index = 0; index < stationLines.length; index++) {
+            const currentLineObject = stationLines[index];
+            if (currentLineObject["stations"].includes(destinationStation["name"])) {
+                if (!(destinationStation["name"] in station["passengers"]) && destinationStation["name"] != station["name"]) {
+                    station["passengers"][destinationStation["name"]] = 0;
+                }
             }
+            console.log(station["passengers"]);
         }
     });
+}
+
+function getStationLines(station) {
+    let stationLines = [];
+    for (let objectIndex = 0; objectIndex < currentLines.length; objectIndex++) {
+        const currentLine = currentLines[objectIndex];
+        if (station["line"].includes(currentLine["color"])) {
+            stationLines.push(currentLines[objectIndex]);
+        }
+    }
+    return stationLines;
 }
 
 function getRandomStationDestination(object) {

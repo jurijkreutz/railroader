@@ -5,6 +5,7 @@ export async function findObjectBySpecificValue (object, keyName, valueToFind){
             return object[objectIndex];
         }
     }
+    return null;
 }
 
 export function findRealtimeObjectBySpecificValue (object, keyName, valueToFind){
