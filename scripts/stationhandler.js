@@ -1,4 +1,4 @@
-import { newLine } from "./lines.js";
+import { newLine, currentStations, currentLines } from "./lines.js";
 import { stationsAllowed } from "./stathandler.js";
 
 export function putStationsOnMap(stationPositions, gameScreen) {
@@ -25,6 +25,8 @@ export function makeStationsClickable(stations, gameScreen, currentClickedStatio
                 currentClickedStations[currentClickedStations.length] = event.currentTarget;
                 station.classList.add('chosen-station');
                 if (currentClickedStations.length >= 2) {
+                    let stationHasOtherLinesAlready = checkIfStationHasLineAlready(currentClickedStations);
+                    if (!stationHasOtherLinesAlready) {
                         newLine(currentClickedStations, gameScreen);
                         currentClickedStations.forEach(station => {
                             station.classList.remove('start-station-animation');
@@ -32,9 +34,27 @@ export function makeStationsClickable(stations, gameScreen, currentClickedStatio
                         });
                         currentClickedStations = [];
                     }
+                    else {
+                        // TODO: Implement promt: What to do if station has line already?
+                        console.log("Has line already")
+                    }
+                    }
             }
         })
     }
+}
+
+function checkIfStationHasLineAlready(currentClickedStations) {
+    let hasLineAlready = false;
+    for (let lineIndex = 0; lineIndex < currentLines.length; lineIndex++) {
+        const line = currentLines[lineIndex];
+        for (let currentClickedStationsIndex = 0; currentClickedStationsIndex < currentClickedStations.length; currentClickedStationsIndex++) {
+            if (line["stations"].includes(currentClickedStations[currentClickedStationsIndex].dataset.stationName)) {
+                hasLineAlready = true;
+            }
+        }
+    }
+    return hasLineAlready;
 }
 
 export function prepareStartStation(startStationName) {
