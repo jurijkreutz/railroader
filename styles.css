@@ -2,9 +2,14 @@ body {
     font-family:'Courier New', Courier, monospace;
 }
 
+p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
 #gamescreen {
     position: relative;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: auto;
     margin-right: auto;
     width: 800px;
@@ -15,11 +20,39 @@ body {
 
 #overview {
     position: relative;
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
     text-align: center;
     font-size: 2em;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#general {
+    padding: 30px;
+    background-color: #0C649C;
+    color: white;
+    flex-basis: 0;
+    flex: 1 1 0px;
+}
+
+#trains {
+    padding: 30px;
+    background-color: #9C9A14;
+    color: white;
+    width: 50;
+    flex-basis: 0;
+    flex: 1 1 0px;
+}
+
+#train-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.info-element {
+    flex: 1 1 0px;
 }
 
 #gamebuttons {

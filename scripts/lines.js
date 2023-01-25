@@ -175,16 +175,16 @@ function sendTrainToPosition(newTrain, newPositionXandY) {
 }
 
 
-export async function addTrainToLine(line, gameScreen) {
+export async function addTrainToLine(lineId, gameScreen) {
+    let currentLine = await findObjectBySpecificValue(currentLines, "lineId", lineId);
     let trainObject = {
-        "line": line,
+        "lineId": lineId,
         "trainId": currentTrains.length+1,
         "trainCapacity": gameSettings.trainStandardCapacity,
         "currentPassengers": {},
         "currentTotalPassengers": 0
     };
     currentTrains.push(trainObject);
-    let currentLine = await findObjectBySpecificValue(currentLines, "lineId", line);
     currentLine["trainIds"].push(trainObject["trainId"]);
     let station1 = document.getElementById(`station-${currentLine["stations"][0]}`)
     let station2 = document.getElementById(`station-${currentLine["stations"][1]}`)
@@ -194,5 +194,5 @@ export async function addTrainToLine(line, gameScreen) {
     let station2PositionsAndName = [parseFloat(station2.style.left),
                                     parseFloat(gameSettings['screenHeight']) - (parseFloat(station2.style.top)),
                                     station2.dataset.stationName];
-    letTrainDrive(gameScreen, station1PositionsAndName, station2PositionsAndName, currentLines.length);
+    letTrainDrive(gameScreen, station1PositionsAndName, station2PositionsAndName, lineId);
 }

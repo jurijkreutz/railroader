@@ -7,6 +7,7 @@ let moneyText = document.getElementById("money-text");
 let lineText = document.getElementById("line-text");
 let passengersText = document.getElementById("passengers-transported-text");
 let buyTrainText = document.getElementById("buy-train");
+let trainInfoContainer = document.getElementById("trains");
 
 export let stationsAllowed = [];
 
@@ -14,7 +15,8 @@ export function initStatisticUpdate() {
     setInterval(() => {
         moneyText.innerText = `Money: ${currentBudget['money']}€`;
         lineText.innerText = `Lines: ${currentLines.length}`;
-        passengersText.innerText = `Passengers transported: ${sumPassengersFromAllLines()}`
+        passengersText.innerText = `Pax transported: ${sumPassengersFromAllLines()}`
+        trainInfoContainer.innerHTML = getTrainInfo();
     }, 50);
 }
 
@@ -24,6 +26,14 @@ function sumPassengersFromAllLines() {
         passengerSum += line["passengers"]
     });
     return passengerSum;
+}
+
+function getTrainInfo() {
+    let trainInfoHTML = `<div id="train-info"><p class="info-element">Train</p> <p class="info-element">Line</p> <p class="info-element">Pax</p></div>`;
+    currentTrains.forEach((train) => {
+        trainInfoHTML += `<div id="train-info"><p class="info-element">${train["trainId"]}</p> <p class="info-element">${train["lineId"]}</p> <p class="info-element">${train["currentTotalPassengers"]}/${train["trainCapacity"]}</p></div>`
+    })
+    return trainInfoHTML;
 }
 
 export function initPassengerHandling() {
@@ -56,8 +66,6 @@ async function initRandomPassengerSpawning() {
         let randomStation = currentStations[Math.floor(Math.random() * currentStations.length)];
         setDestinationsForStation(randomStation);
         let destinationToSpawnNewPassengerFor = randomStation["name"];
-        let currentLineObject = await findObjectBySpecificValue(currentLines, "color", randomStation["line"]);
-
 
         let stationLines = getStationLines(randomStation);
         let reachableStations = [];
@@ -109,7 +117,6 @@ function setDestinationsForStation(station) {
                     station["passengers"][destinationStation["name"]] = 0;
                 }
             }
-            console.log(station["passengers"]);
         }
     });
 }
@@ -134,6 +141,7 @@ export async function pickUpPassengers(trainId, stationName, lineId) {
     let currentLineObject = await findObjectBySpecificValue(currentLines, "lineId", lineId);
     let currentStationObject = await findObjectBySpecificValue(currentStations, "name", stationName);
     let currentTrainObject = await findObjectBySpecificValue(currentTrains, "trainId", trainId);
+    console.log(currentTrainObject, currentLineObject)
     for (const key in currentStationObject["passengers"]) {
         if (!(key in currentTrainObject["currentPassengers"])) {
             currentTrainObject["currentPassengers"][key] = 0;
@@ -169,9 +177,9 @@ export async function pickUpPassengers(trainId, stationName, lineId) {
  export function initGameButtons(gameScreen) {
     buyTrainText.addEventListener("click", () => {
         if (currentBudget['money'] >= gameSettings['trainPrice']) {
-            let chosenLine = parseInt(prompt("Which line gets a new train?", 1));
+            let chosenLineId = parseInt(prompt("Which line gets a new train?", 1));
             currentBudget['money'] -= gameSettings['trainPrice'];
-            addTrainToLine(chosenLine, gameScreen);
+            addTrainToLine(chosenLineId, gameScreen);
         }
         else {
             alert("Not enough money");
@@ -199,6 +207,4 @@ export function initStationUpdate(stations) {
         stationToAdd["name"] = randomStation.dataset.stationName;
         prepareStation(stationToAdd);
     }, 10000);
-    
-
 }
