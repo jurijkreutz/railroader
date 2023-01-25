@@ -143,30 +143,26 @@ function letTrainDrive(gameScreen, trainStationList, lineId) {
     newTrain.id = `train-${newTrainId}`;
     newTrain.style.left = trainStationList[0][0] + "px";
     newTrain.style.bottom = trainStationList[0][1] + "px";
-
-    //t est start
     let pickUpSign = document.createElement('div');
     pickUpSign.classList.add('pickup-sign');
     pickUpSign.id = `pickUpSign-${newTrainId}`;
     newTrain.appendChild(pickUpSign);
-    // test end
-
     gameScreen.append(newTrain);
-    newTrain.dataset.startDirection = "B";
+    newTrain.dataset.startDirection = 1;
     newTrain.dataset.myId = newTrainId;
     setInterval(async () => {
-        if (newTrain.dataset.startDirection == "B") {
+        if (newTrain.dataset.startDirection == 1) {
             newTrain.dataset.startDirection = "none";
             await disembarkPassengers(newTrainId, trainStationList[0][2], lineId);
             await pickUpPassengers(newTrainId, trainStationList[0][2], lineId);
-            newTrain.dataset.currentDirection = "B";
+            newTrain.dataset.currentDirection = 1;
             sendTrainToPosition(newTrain, trainStationList[1])
         }
-        else if (newTrain.dataset.startDirection == "A"){
+        else if (newTrain.dataset.startDirection == 0){
             newTrain.dataset.startDirection = "none";
             await disembarkPassengers(newTrainId, trainStationList[1][2], lineId);
             await pickUpPassengers(newTrainId, trainStationList[1][2], lineId)
-            newTrain.dataset.currentDirection = "A";
+            newTrain.dataset.currentDirection = 0;
             sendTrainToPosition(newTrain, trainStationList[0])
         }
     }, 0);
@@ -185,7 +181,7 @@ function sendTrainToPosition(newTrain, newPositionXandY) {
         newTrain.style.left = newPositionXandY[0] + "px";
         newTrain.style.bottom = newPositionXandY[1] + "px";
         setTimeout(function() {
-            newTrain.dataset.startDirection = (newTrain.dataset.currentDirection == "B") ? "A" : "B";
+            newTrain.dataset.startDirection = (newTrain.dataset.currentDirection == 1) ? 0 : 1;
         }, gameSettings.trainTimeAtStation)
     }, false);
 }
