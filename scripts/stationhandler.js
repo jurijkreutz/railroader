@@ -52,11 +52,19 @@ export function makeStationsClickable(stations, gameScreen) {
                     else {
                         // TODO: Implement promt: What to do if station has line already?
                         console.log("Has line already")
-                        newLine(currentClickedStations, gameScreen);
-                        currentClickedStations.forEach(station => {
-                            station.classList.remove('start-station-animation');
-                            setTimeout(() => {station.classList.remove('chosen-station')}, 2000);
-                        });
+                        
+                        let wantsNewLine = confirm("Do you want to create a new line?");
+                        
+                        if (wantsNewLine) {
+                            newLine(currentClickedStations, gameScreen);
+                            currentClickedStations.forEach(station => {
+                                station.classList.remove('start-station-animation');
+                                setTimeout(() => {station.classList.remove('chosen-station')}, 2000);
+                            });
+                        }
+                        else {
+                            
+                        }
                     }
                     currentClickedStations = [];
                     }

@@ -24,11 +24,14 @@ export function newLine(currentClickedStations, gameScreen) {
     let station2PositionsAndName = [parseFloat(currentClickedStations[1].style.left),
                                     parseFloat(gameSettings['screenHeight']) - (parseFloat(currentClickedStations[1].style.top)),
                                     currentClickedStations[1].dataset.stationName];
+    let trainStationList = []
+    trainStationList.push(station1PositionsAndName);
+    trainStationList.push(station2PositionsAndName);
     let distanceBetweenPoints = getDistanceBetweenPoints(station1PositionsAndName, station2PositionsAndName, newLine);
     getAngleBetweenPoints(station1PositionsAndName, station2PositionsAndName, distanceBetweenPoints, newLine);
     saveNewLine(lineColor, currentClickedStations);
     gameScreen.append(newLine);
-    letTrainDrive(gameScreen, station1PositionsAndName, station2PositionsAndName, currentLines.length);
+    letTrainDrive(gameScreen, trainStationList, currentLines.length);
 }
 
 async function saveNewLine(lineColor, currentClickedStations) {
@@ -133,13 +136,13 @@ function handleAngleEdgeCases(rotateDegrees, distanceBetweenPoints, horizontalDi
     return rotateDegrees;
 }
 
-function letTrainDrive(gameScreen, station1PositionsAndName, station2PositionsAndName, lineId) {
+function letTrainDrive(gameScreen, trainStationList, lineId) {
     let newTrain = document.createElement('div');
     newTrain.classList.add('train');
     let newTrainId = currentTrains.length;
     newTrain.id = `train-${newTrainId}`;
-    newTrain.style.left = station1PositionsAndName[0] + "px";
-    newTrain.style.bottom = station1PositionsAndName[1] + "px";
+    newTrain.style.left = trainStationList[0][0] + "px";
+    newTrain.style.bottom = trainStationList[0][1] + "px";
 
     //t est start
     let pickUpSign = document.createElement('div');
@@ -154,17 +157,17 @@ function letTrainDrive(gameScreen, station1PositionsAndName, station2PositionsAn
     setInterval(async () => {
         if (newTrain.dataset.startDirection == "B") {
             newTrain.dataset.startDirection = "none";
-            await disembarkPassengers(newTrainId, station1PositionsAndName[2], lineId);
-            await pickUpPassengers(newTrainId, station1PositionsAndName[2], lineId);
+            await disembarkPassengers(newTrainId, trainStationList[0][2], lineId);
+            await pickUpPassengers(newTrainId, trainStationList[0][2], lineId);
             newTrain.dataset.currentDirection = "B";
-            sendTrainToPosition(newTrain, station2PositionsAndName)
+            sendTrainToPosition(newTrain, trainStationList[1])
         }
         else if (newTrain.dataset.startDirection == "A"){
             newTrain.dataset.startDirection = "none";
-            await disembarkPassengers(newTrainId, station2PositionsAndName[2], lineId);
-            await pickUpPassengers(newTrainId, station2PositionsAndName[2], lineId)
+            await disembarkPassengers(newTrainId, trainStationList[1][2], lineId);
+            await pickUpPassengers(newTrainId, trainStationList[1][2], lineId)
             newTrain.dataset.currentDirection = "A";
-            sendTrainToPosition(newTrain, station1PositionsAndName)
+            sendTrainToPosition(newTrain, trainStationList[0])
         }
     }, 0);
 }
@@ -213,5 +216,8 @@ export async function addTrainToLine(lineId, gameScreen) {
     let station2PositionsAndName = [parseFloat(station2.style.left),
                                     parseFloat(gameSettings['screenHeight']) - (parseFloat(station2.style.top)),
                                     station2.dataset.stationName];
-    letTrainDrive(gameScreen, station1PositionsAndName, station2PositionsAndName, lineId);
+    let trainStationList = []
+    trainStationList.push(station1PositionsAndName);
+    trainStationList.push(station2PositionsAndName);
+    letTrainDrive(gameScreen, trainStationList, lineId);
 }
