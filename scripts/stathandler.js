@@ -90,19 +90,19 @@ async function initRandomPassengerSpawning() {
 }
 
 function setSpawnSpeed() {
-    let passengerSpawnCounter = 220; 
+    let passengerSpawnCounter = 440; 
     let currentPassengerCount = sumPassengersFromAllLines()
     if (currentPassengerCount > 300) {
-        passengerSpawnCounter = 50;
+        passengerSpawnCounter = 100;
     }
     else if (currentPassengerCount > 200) {
-        passengerSpawnCounter = 160;
+        passengerSpawnCounter = 320;
     }
     else if (currentPassengerCount > 100) {
-        passengerSpawnCounter = 180;
+        passengerSpawnCounter = 360;
     }
     else if (currentPassengerCount > 50 ) {
-        passengerSpawnCounter = 200;
+        passengerSpawnCounter = 400;
     }
     return passengerSpawnCounter;
 }
