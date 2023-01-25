@@ -10,7 +10,8 @@ export const gameSettings = {'screenHeight': window.getComputedStyle(gameScreen)
                              'startingStation': 'linz',
                              'trainStandardCapacity': 20,
                              'priceForOneRide': 7,
-                             'trainPrice': 800};
+                             'trainPrice': 800,
+                             'trainTimeAtStation': 2000}; // default: 1000
 
 let stationPositions = {'vienna': [110, 700],
                         'graz': [290, 605],

@@ -190,3 +190,29 @@ p {
     0%   { left: var(--my-start-left-pos); bottom: var(--my-start-bottom-pos); transform:rotate(0deg)}
     100% {left: var(--my-end-left-pos); bottom: var(--my-end-bottom-pos); transform:rotate(0deg)}
     }
+
+
+/* signs css */
+
+.pickup-sign {
+    position: absolute;
+    left: 40px;
+    bottom: 40px;
+    background-image: url('source/pickup.png');
+    background-size: 100%;
+    width: 35px;
+    height: 35px;
+    z-index: 999;
+    opacity: 0;
+}
+
+.show-pickup-sign {
+    opacity: 100 !important;
+}
+
+@keyframes fadeinout {
+  0%,100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+

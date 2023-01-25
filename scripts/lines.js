@@ -140,8 +140,17 @@ function letTrainDrive(gameScreen, station1PositionsAndName, station2PositionsAn
     newTrain.id = `train-${newTrainId}`;
     newTrain.style.left = station1PositionsAndName[0] + "px";
     newTrain.style.bottom = station1PositionsAndName[1] + "px";
+
+    //t est start
+    let pickUpSign = document.createElement('div');
+    pickUpSign.classList.add('pickup-sign');
+    pickUpSign.id = `pickUpSign-${newTrainId}`;
+    newTrain.appendChild(pickUpSign);
+    // test end
+
     gameScreen.append(newTrain);
     newTrain.dataset.startDirection = "B";
+    newTrain.dataset.myId = newTrainId;
     setInterval(async () => {
         if (newTrain.dataset.startDirection == "B") {
             newTrain.dataset.startDirection = "none";
@@ -169,12 +178,20 @@ function sendTrainToPosition(newTrain, newPositionXandY) {
     newTrain.style.setProperty('--my-end-left-pos', newPositionXandY[0] + "px");
     newTrain.style.setProperty('--my-end-bottom-pos', newPositionXandY[1] + "px");
     newTrain.addEventListener("animationend", () => {
+        showPickUpSign(newTrain);
         newTrain.style.left = newPositionXandY[0] + "px";
         newTrain.style.bottom = newPositionXandY[1] + "px";
-        newTrain.dataset.startDirection = (newTrain.dataset.currentDirection == "B") ? "A" : "B";
+        setTimeout(function() {
+            newTrain.dataset.startDirection = (newTrain.dataset.currentDirection == "B") ? "A" : "B";
+        }, gameSettings.trainTimeAtStation)
     }, false);
 }
 
+function showPickUpSign(newTrain) {
+    let pickUpSign = document.getElementById(`pickUpSign-${newTrain.dataset.myId}`);
+    pickUpSign.classList.add('show-pickup-sign');
+    setTimeout(function(){pickUpSign.classList.remove('show-pickup-sign')}, gameSettings.trainTimeAtStation);
+}
 
 export async function addTrainToLine(lineId, gameScreen) {
     let currentLine = await findObjectBySpecificValue(currentLines, "lineId", lineId);
