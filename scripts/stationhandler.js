@@ -48,13 +48,17 @@ export function makeStationsClickable(stations, gameScreen) {
                             station.classList.remove('start-station-animation');
                             setTimeout(() => {station.classList.remove('chosen-station')}, 2000);
                         });
-                        currentClickedStations = [];
                     }
                     else {
                         // TODO: Implement promt: What to do if station has line already?
-                        currentClickedStations = [];
                         console.log("Has line already")
+                        newLine(currentClickedStations, gameScreen);
+                        currentClickedStations.forEach(station => {
+                            station.classList.remove('start-station-animation');
+                            setTimeout(() => {station.classList.remove('chosen-station')}, 2000);
+                        });
                     }
+                    currentClickedStations = [];
                     }
             }
         })
