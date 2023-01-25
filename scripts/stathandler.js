@@ -1,6 +1,6 @@
 import { gameSettings } from "./gamescript.js";
 import { currentLines, currentStations, currentTrains, currentBudget, addTrainToLine } from "./lines.js";
-import { findObjectBySpecificValue, findRealtimeObjectBySpecificValue } from "./helpers.js";
+import { findObjectBySpecificValue } from "./helpers.js";
 import { prepareStation } from "./stationhandler.js";
 
 let moneyText = document.getElementById("money-text");
@@ -31,7 +31,7 @@ function sumPassengersFromAllLines() {
 function getTrainInfo() {
     let trainInfoHTML = `<div id="train-info"><p class="info-element">Train</p> <p class="info-element">Line</p> <p class="info-element">Pax</p></div>`;
     currentTrains.forEach((train) => {
-        trainInfoHTML += `<div id="train-info"><p class="info-element">${train["trainId"]}</p> <p class="info-element">${train["lineId"]}</p> <p class="info-element">${train["currentTotalPassengers"]}/${train["trainCapacity"]}</p></div>`
+        trainInfoHTML += `<div id="train-info"><p class="info-element">${train["trainId"]}</p> <p style="background-color: ${train["lineColor"]};" class="info-element">${train["lineId"]}</p> <p class="info-element">${train["currentTotalPassengers"]}/${train["trainCapacity"]}</p></div>`
     })
     return trainInfoHTML;
 }

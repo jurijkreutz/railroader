@@ -34,6 +34,7 @@ export function newLine(currentClickedStations, gameScreen) {
 async function saveNewLine(lineColor, currentClickedStations) {
     let trainObject = {
         "lineId": currentLines.length+1,
+        "lineColor": lineColor,
         "trainId": currentTrains.length+1,
         "trainCapacity": gameSettings.trainStandardCapacity,
         "currentPassengers": {},
@@ -179,6 +180,7 @@ export async function addTrainToLine(lineId, gameScreen) {
     let currentLine = await findObjectBySpecificValue(currentLines, "lineId", lineId);
     let trainObject = {
         "lineId": lineId,
+        "lineColor": currentLine["color"],
         "trainId": currentTrains.length+1,
         "trainCapacity": gameSettings.trainStandardCapacity,
         "currentPassengers": {},
