@@ -206,5 +206,5 @@ export function initStationUpdate(stations) {
         let stationToAdd = {};
         stationToAdd["name"] = randomStation.dataset.stationName;
         prepareStation(stationToAdd);
-    }, 10000);
+    }, 15000);
 }
