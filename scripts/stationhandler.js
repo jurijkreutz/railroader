@@ -50,7 +50,6 @@ export function makeStationsClickable(stations, gameScreen) {
                         });
                     }
                     else {
-                        // TODO: Implement promt: What to do if station has line already?
                         console.log("Has line already")
                         
                         let wantsNewLine = confirm("Do you want to create a new line? Cancel to add station to existing line.");

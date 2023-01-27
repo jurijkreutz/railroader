@@ -29,9 +29,9 @@ export function newLine(currentClickedStations, gameScreen) {
     trainStationList.push(station2PositionsAndName);
     let distanceBetweenPoints = getDistanceBetweenPoints(station1PositionsAndName, station2PositionsAndName, newLine);
     getAngleBetweenPoints(station1PositionsAndName, station2PositionsAndName, distanceBetweenPoints, newLine);
-    saveNewLine(lineColor, currentClickedStations);
+    saveNewLine(lineColor, currentClickedStations, trainStationList);
     gameScreen.append(newLine);
-    letTrainDrive(gameScreen, trainStationList, currentLines.length);
+    letTrainDrive(gameScreen, currentLines.length-1);
 }
 
 function drawExpansionOfExistingLine(currentClickedStations, lineColor, gameScreen) {
@@ -52,11 +52,13 @@ function drawExpansionOfExistingLine(currentClickedStations, lineColor, gameScre
     let distanceBetweenPoints = getDistanceBetweenPoints(station1PositionsAndName, station2PositionsAndName, expandedLine);
     getAngleBetweenPoints(station1PositionsAndName, station2PositionsAndName, distanceBetweenPoints, expandedLine);
     gameScreen.append(expandedLine);
+    return trainStationList;
 }
 
-async function saveNewLine(lineColor, currentClickedStations) {
+async function saveNewLine(lineColor, currentClickedStations, trainStationList) {
+    let lineId = currentLines.length+1;
     let trainObject = {
-        "lineId": currentLines.length+1,
+        "lineId": lineId,
         "lineColor": lineColor,
         "trainId": currentTrains.length+1,
         "trainCapacity": gameSettings.trainStandardCapacity,
@@ -65,9 +67,10 @@ async function saveNewLine(lineColor, currentClickedStations) {
     };
     currentTrains.push(trainObject);
     let lineObject = {
-        "lineId": currentLines.length+1,
+        "lineId": lineId,
         "color": lineColor,
         "stations": [currentClickedStations[0].dataset.stationName, currentClickedStations[1].dataset.stationName],
+        "stationDetails": trainStationList,
         "trainIds": [trainObject["trainId"]],
         "passengers": 0
     };
@@ -87,7 +90,7 @@ async function saveNewLine(lineColor, currentClickedStations) {
             let alreadyExistingStation = await findObjectBySpecificValue(currentStations, "name", stationName);
             alreadyExistingStation["line"].push(lineColor);
         }
-    }
+    };
 }
 
 function setLineStyle(newLine) {
@@ -156,13 +159,14 @@ function handleAngleEdgeCases(rotateDegrees, distanceBetweenPoints, horizontalDi
     return rotateDegrees;
 }
 
-function letTrainDrive(gameScreen, trainStationList, lineId) {
+function letTrainDrive(gameScreen, lineNum) {
+    let lineId = lineNum + 1 
     let newTrain = document.createElement('div');
     newTrain.classList.add('train');
     let newTrainId = currentTrains.length;
     newTrain.id = `train-${newTrainId}`;
-    newTrain.style.left = trainStationList[0][0] + "px";
-    newTrain.style.bottom = trainStationList[0][1] + "px";
+    newTrain.style.left = currentLines[lineNum]["stationDetails"][0][0] + "px";
+    newTrain.style.bottom = currentLines[lineNum]["stationDetails"][0][1] + "px";
     let pickUpSign = document.createElement('div');
     pickUpSign.classList.add('pickup-sign');
     pickUpSign.id = `pickUpSign-${newTrainId}`;
@@ -171,6 +175,7 @@ function letTrainDrive(gameScreen, trainStationList, lineId) {
     newTrain.dataset.startDirection = 1;
     newTrain.dataset.myId = newTrainId;
     setInterval(async () => {
+        let trainStationList = currentLines[lineNum]["stationDetails"];
         if (newTrain.dataset.startDirection == 1) {
             newTrain.dataset.startDirection = "none";
             await disembarkPassengers(newTrainId, trainStationList[0][2], lineId);
@@ -235,7 +240,8 @@ export async function addTrainToLine(lineId, gameScreen) {
     let trainStationList = []
     trainStationList.push(station1PositionsAndName);
     trainStationList.push(station2PositionsAndName);
-    letTrainDrive(gameScreen, trainStationList, lineId);
+    let lineNum = lineId - 1
+    letTrainDrive(gameScreen, lineNum);
 }
 
 export async function addStationToLine(currentClickedStations, gameScreen) {
@@ -245,6 +251,10 @@ export async function addStationToLine(currentClickedStations, gameScreen) {
             lineToBeExpanded["stations"].push(station.dataset.stationName);
         }
     })
-    drawExpansionOfExistingLine(currentClickedStations, lineToBeExpanded["color"], gameScreen);
-
+    let stationDetailList = drawExpansionOfExistingLine(currentClickedStations, lineToBeExpanded["color"], gameScreen);
+    stationDetailList.forEach((station) => {
+        if (lineToBeExpanded["stationDetails"].filter((existingStation) => existingStation[2] === station[2]).length === 0) {
+            lineToBeExpanded["stationDetails"].push(station);
+        }
+    })
 }
