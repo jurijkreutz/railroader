@@ -16,3 +16,13 @@ export function findRealtimeObjectBySpecificValue (object, keyName, valueToFind)
         }
     }
 }
+
+export function getLineToBeExpandedFromClickedStations(currentClickedStations) {
+    currentClickedStations.forEach((station) => {
+        currentLines.forEach((line => {
+            if (line["stations"].includes(station.dataset.stationName)) {
+                return line;
+            };
+        }));
+    });
+}

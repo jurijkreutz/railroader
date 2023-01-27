@@ -1,4 +1,4 @@
-import { newLine, currentLines } from "./lines.js";
+import { newLine, currentLines, addStationToLine } from "./lines.js";
 import { stationsAllowed } from "./stathandler.js";
 
 let currentClickedStations = [];
@@ -53,7 +53,7 @@ export function makeStationsClickable(stations, gameScreen) {
                         // TODO: Implement promt: What to do if station has line already?
                         console.log("Has line already")
                         
-                        let wantsNewLine = confirm("Do you want to create a new line?");
+                        let wantsNewLine = confirm("Do you want to create a new line? Cancel to add station to existing line.");
                         
                         if (wantsNewLine) {
                             newLine(currentClickedStations, gameScreen);
@@ -63,7 +63,7 @@ export function makeStationsClickable(stations, gameScreen) {
                             });
                         }
                         else {
-                            
+                            addStationToLine(currentClickedStations)
                         }
                     }
                     currentClickedStations = [];
