@@ -175,6 +175,7 @@ function letTrainDrive(gameScreen, lineNum) {
     newTrain.dataset.startDirection = 1;
     newTrain.dataset.myId = newTrainId;
     setInterval(async () => {
+        // TODO: Make trains drive through all stations and then back to first
         let trainStationList = currentLines[lineNum]["stationDetails"];
         if (newTrain.dataset.startDirection == 1) {
             newTrain.dataset.startDirection = "none";
