@@ -34,6 +34,26 @@ export function newLine(currentClickedStations, gameScreen) {
     letTrainDrive(gameScreen, trainStationList, currentLines.length);
 }
 
+function drawExpansionOfExistingLine(currentClickedStations, lineColor, gameScreen) {
+    let expandedLine = document.createElement("div");
+    expandedLine.classList.add('line');
+    expandedLine.style.backgroundColor = lineColor;
+    expandedLine.style.borderColor = lineColor;
+    setLeftMostPositionAsStartingPoint(currentClickedStations, expandedLine);
+    let station1PositionsAndName = [parseFloat(currentClickedStations[0].style.left),
+                                    parseFloat(gameSettings['screenHeight']) - (parseFloat(currentClickedStations[0].style.top)),
+                                    currentClickedStations[0].dataset.stationName];
+    let station2PositionsAndName = [parseFloat(currentClickedStations[1].style.left),
+                                    parseFloat(gameSettings['screenHeight']) - (parseFloat(currentClickedStations[1].style.top)),
+                                    currentClickedStations[1].dataset.stationName];
+    let trainStationList = []
+    trainStationList.push(station1PositionsAndName);
+    trainStationList.push(station2PositionsAndName);
+    let distanceBetweenPoints = getDistanceBetweenPoints(station1PositionsAndName, station2PositionsAndName, expandedLine);
+    getAngleBetweenPoints(station1PositionsAndName, station2PositionsAndName, distanceBetweenPoints, expandedLine);
+    gameScreen.append(expandedLine);
+}
+
 async function saveNewLine(lineColor, currentClickedStations) {
     let trainObject = {
         "lineId": currentLines.length+1,
@@ -218,13 +238,13 @@ export async function addTrainToLine(lineId, gameScreen) {
     letTrainDrive(gameScreen, trainStationList, lineId);
 }
 
-export function addStationToLine(currentClickedStations) {
-    let lineToBeExpanded = getLineToBeExpandedFromClickedStations(currentClickedStations);
+export async function addStationToLine(currentClickedStations, gameScreen) {
+    let lineToBeExpanded = await getLineToBeExpandedFromClickedStations(currentClickedStations, currentLines);
     currentClickedStations.forEach((station) => {
         if (!lineToBeExpanded["stations"].includes(station.dataset.stationName)) {
             lineToBeExpanded["stations"].push(station.dataset.stationName);
         }
     })
-    
+    drawExpansionOfExistingLine(currentClickedStations, lineToBeExpanded["color"], gameScreen);
 
 }

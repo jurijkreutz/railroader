@@ -57,15 +57,15 @@ export function makeStationsClickable(stations, gameScreen) {
                         
                         if (wantsNewLine) {
                             newLine(currentClickedStations, gameScreen);
-                            currentClickedStations.forEach(station => {
-                                station.classList.remove('start-station-animation');
-                                setTimeout(() => {station.classList.remove('chosen-station')}, 2000);
-                            });
                         }
                         else {
-                            addStationToLine(currentClickedStations)
+                            addStationToLine(currentClickedStations, gameScreen)
                         }
                     }
+                    currentClickedStations.forEach(station => {
+                        station.classList.remove('start-station-animation');
+                        setTimeout(() => {station.classList.remove('chosen-station')}, 2000);
+                    });
                     currentClickedStations = [];
                     }
             }

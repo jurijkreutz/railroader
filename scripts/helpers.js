@@ -17,12 +17,14 @@ export function findRealtimeObjectBySpecificValue (object, keyName, valueToFind)
     }
 }
 
-export function getLineToBeExpandedFromClickedStations(currentClickedStations) {
+export async function getLineToBeExpandedFromClickedStations(currentClickedStations, currentLines) {
+    let lineToBeExpanded = null;
     currentClickedStations.forEach((station) => {
         currentLines.forEach((line => {
             if (line["stations"].includes(station.dataset.stationName)) {
-                return line;
+                lineToBeExpanded = line;
             };
         }));
     });
+    return lineToBeExpanded;
 }
