@@ -172,29 +172,30 @@ function letTrainDrive(gameScreen, lineNum) {
     pickUpSign.id = `pickUpSign-${newTrainId}`;
     newTrain.appendChild(pickUpSign);
     gameScreen.append(newTrain);
-    newTrain.dataset.startDirection = 1;
+    newTrain.dataset.startDirection = "out";
+    newTrain.dataset.currentDirection = 0;
     newTrain.dataset.myId = newTrainId;
     setInterval(async () => {
-        // TODO: Make trains drive through all stations and then back to first
         let trainStationList = currentLines[lineNum]["stationDetails"];
-        if (newTrain.dataset.startDirection == 1) {
+        if (newTrain.dataset.startDirection == "out") {
             newTrain.dataset.startDirection = "none";
             await disembarkPassengers(newTrainId, trainStationList[0][2], lineId);
             await pickUpPassengers(newTrainId, trainStationList[0][2], lineId);
-            newTrain.dataset.currentDirection = 1;
-            sendTrainToPosition(newTrain, trainStationList[1])
+            newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1;
+            console.log(newTrain.dataset.currentDirection)
+            sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
         }
-        else if (newTrain.dataset.startDirection == 0){
+        else if (newTrain.dataset.startDirection == "in"){
             newTrain.dataset.startDirection = "none";
             await disembarkPassengers(newTrainId, trainStationList[1][2], lineId);
             await pickUpPassengers(newTrainId, trainStationList[1][2], lineId)
-            newTrain.dataset.currentDirection = 0;
-            sendTrainToPosition(newTrain, trainStationList[0])
+            newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) - 1;
+            sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
         }
     }, 0);
 }
 
-function sendTrainToPosition(newTrain, newPositionXandY) {
+function sendTrainToPosition(newTrain, newPositionXandY, trainStationList) {
     newTrain.classList.remove('move-train-to-b');
     newTrain.offsetWidth;
     newTrain.classList.add('move-train-to-b');
@@ -207,7 +208,17 @@ function sendTrainToPosition(newTrain, newPositionXandY) {
         newTrain.style.left = newPositionXandY[0] + "px";
         newTrain.style.bottom = newPositionXandY[1] + "px";
         setTimeout(function() {
-            newTrain.dataset.startDirection = (newTrain.dataset.currentDirection == 1) ? 0 : 1;
+            // TODO: Bugfix of missing stations if more than 2, correct passenger handling
+            if (newTrain.dataset.currentDirection == 0) {
+                newTrain.dataset.currentlyDriving = "out-to-last-station";
+            }
+            if (newTrain.dataset.currentDirection == trainStationList.length-1 || newTrain.dataset.currentlyDriving == "back-to-first-station") {
+                newTrain.dataset.startDirection = "in";
+                newTrain.dataset.currentlyDriving = "back-to-first-station";
+            }
+            else {
+                newTrain.dataset.startDirection = "out";
+            }
         }, gameSettings.trainTimeAtStation)
     }, false);
 }
