@@ -84,7 +84,6 @@ async function saveNewLine(lineColor, currentClickedStations, trainStationList) 
                 "passengers": {}
             }
             currentStations.push(stationObject);
-            console.log(stationObject)
         }
         else {
             let alreadyExistingStation = await findObjectBySpecificValue(currentStations, "name", stationName);
@@ -175,20 +174,22 @@ function letTrainDrive(gameScreen, lineNum) {
     newTrain.dataset.startDirection = "out";
     newTrain.dataset.currentDirection = 0;
     newTrain.dataset.myId = newTrainId;
+    let indexForNextStation = 0
     setInterval(async () => {
         let trainStationList = currentLines[lineNum]["stationDetails"];
         if (newTrain.dataset.startDirection == "out") {
             newTrain.dataset.startDirection = "none";
-            await disembarkPassengers(newTrainId, trainStationList[0][2], lineId);
-            await pickUpPassengers(newTrainId, trainStationList[0][2], lineId);
+            await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
+            await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
+            indexForNextStation++
             newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1;
-            console.log(newTrain.dataset.currentDirection)
             sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
         }
         else if (newTrain.dataset.startDirection == "in"){
             newTrain.dataset.startDirection = "none";
-            await disembarkPassengers(newTrainId, trainStationList[1][2], lineId);
-            await pickUpPassengers(newTrainId, trainStationList[1][2], lineId)
+            await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
+            await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId)
+            indexForNextStation--
             newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) - 1;
             sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
         }
@@ -208,7 +209,6 @@ function sendTrainToPosition(newTrain, newPositionXandY, trainStationList) {
         newTrain.style.left = newPositionXandY[0] + "px";
         newTrain.style.bottom = newPositionXandY[1] + "px";
         setTimeout(function() {
-            // TODO: Bugfix of missing stations if more than 2, correct passenger handling
             if (newTrain.dataset.currentDirection == 0) {
                 newTrain.dataset.currentlyDriving = "out-to-last-station";
             }
@@ -261,6 +261,12 @@ export async function addStationToLine(currentClickedStations, gameScreen) {
     currentClickedStations.forEach((station) => {
         if (!lineToBeExpanded["stations"].includes(station.dataset.stationName)) {
             lineToBeExpanded["stations"].push(station.dataset.stationName);
+            let stationObject = {
+                "name": station.dataset.stationName,
+                "line": [lineToBeExpanded["color"], ],
+                "passengers": {}
+            }
+            currentStations.push(stationObject);
         }
     })
     let stationDetailList = drawExpansionOfExistingLine(currentClickedStations, lineToBeExpanded["color"], gameScreen);

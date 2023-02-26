@@ -41,5 +41,6 @@ function startGame() {
 startGame();
 
 // TO-DOs:
-// - Allow lines to have more than 2 stations
+// - Allow lines to have more than 2 stations X
 // - Randomize Interval of Spawning Passengers
+// - Only pick up passengers if station is ahead

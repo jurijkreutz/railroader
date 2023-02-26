@@ -141,7 +141,6 @@ export async function pickUpPassengers(trainId, stationName, lineId) {
     let currentLineObject = await findObjectBySpecificValue(currentLines, "lineId", lineId);
     let currentStationObject = await findObjectBySpecificValue(currentStations, "name", stationName);
     let currentTrainObject = await findObjectBySpecificValue(currentTrains, "trainId", trainId);
-    console.log(currentTrainObject, currentLineObject)
     for (const key in currentStationObject["passengers"]) {
         if (!(key in currentTrainObject["currentPassengers"])) {
             currentTrainObject["currentPassengers"][key] = 0;
