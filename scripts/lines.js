@@ -177,26 +177,48 @@ function letTrainDrive(gameScreen, lineNum) {
     let indexForNextStation = 0
     setInterval(async () => {
         let trainStationList = currentLines[lineNum]["stationDetails"];
-        if (newTrain.dataset.startDirection == "out") {
-            newTrain.dataset.startDirection = "none";
-            await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
-            await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
-            indexForNextStation++
-            newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1;
-            sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
-        }
-        else if (newTrain.dataset.startDirection == "in"){
-            newTrain.dataset.startDirection = "none";
-            await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
-            await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId)
-            indexForNextStation--
-            newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) - 1;
-            sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
-        }
-    }, 0);
+            if (newTrain.dataset.startDirection == "out") {
+                newTrain.dataset.startDirection = "none";
+                await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
+                await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
+                indexForNextStation++
+                newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1;
+                await sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
+            }
+            else if (newTrain.dataset.startDirection == "in"){
+                newTrain.dataset.startDirection = "none";
+                await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
+                await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId)
+                indexForNextStation--
+                newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) - 1;
+                await sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
+            }
+    }, 50);
+    initializeNextStationSetter(newTrain, lineNum);
 }
 
-function sendTrainToPosition(newTrain, newPositionXandY, trainStationList) {
+function initializeNextStationSetter(newTrain, lineNum) {
+    newTrain.addEventListener("animationend", () => {
+        let trainStationList = currentLines[lineNum]["stationDetails"];
+        showPickUpSign(newTrain);
+        newTrain.style.left = trainStationList[parseInt(newTrain.dataset.currentDirection)][0] + "px";
+        newTrain.style.bottom = trainStationList[parseInt(newTrain.dataset.currentDirection)][1] + "px";
+        setTimeout(function () {
+            if (newTrain.dataset.currentDirection == 0) {
+                newTrain.dataset.currentlyDriving = "out-to-last-station";
+            }
+            if (newTrain.dataset.currentDirection == trainStationList.length - 1 || newTrain.dataset.currentlyDriving == "back-to-first-station") {
+                newTrain.dataset.startDirection = "in";
+                newTrain.dataset.currentlyDriving = "back-to-first-station";
+            }
+            else {
+                newTrain.dataset.startDirection = "out";
+            }
+        }, gameSettings.trainTimeAtStation);
+    }, false);
+}
+
+async function sendTrainToPosition(newTrain, newPositionXandY) {
     newTrain.classList.remove('move-train-to-b');
     newTrain.offsetWidth;
     newTrain.classList.add('move-train-to-b');
@@ -204,23 +226,6 @@ function sendTrainToPosition(newTrain, newPositionXandY, trainStationList) {
     newTrain.style.setProperty('--my-start-bottom-pos', newTrain.style.bottom);
     newTrain.style.setProperty('--my-end-left-pos', newPositionXandY[0] + "px");
     newTrain.style.setProperty('--my-end-bottom-pos', newPositionXandY[1] + "px");
-    newTrain.addEventListener("animationend", () => {
-        showPickUpSign(newTrain);
-        newTrain.style.left = newPositionXandY[0] + "px";
-        newTrain.style.bottom = newPositionXandY[1] + "px";
-        setTimeout(function() {
-            if (newTrain.dataset.currentDirection == 0) {
-                newTrain.dataset.currentlyDriving = "out-to-last-station";
-            }
-            if (newTrain.dataset.currentDirection == trainStationList.length-1 || newTrain.dataset.currentlyDriving == "back-to-first-station") {
-                newTrain.dataset.startDirection = "in";
-                newTrain.dataset.currentlyDriving = "back-to-first-station";
-            }
-            else {
-                newTrain.dataset.startDirection = "out";
-            }
-        }, gameSettings.trainTimeAtStation)
-    }, false);
 }
 
 function showPickUpSign(newTrain) {

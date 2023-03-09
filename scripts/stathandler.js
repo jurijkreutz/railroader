@@ -144,8 +144,6 @@ export async function pickUpPassengers(trainId, stationName, lineId) {
     // Get index of current station to determine which are the next stations
     // Next: Only pick up passengers for upcoming stations (not for last stations)
     // Function also has to now if train is driving outward or inward
-    console.log(currentStationObject)
-    console.log(currentLineObject["stations"].indexOf(currentStationObject["name"]))
     for (const key in currentStationObject["passengers"]) {
         if (!(key in currentTrainObject["currentPassengers"])) {
             currentTrainObject["currentPassengers"][key] = 0;

@@ -44,3 +44,4 @@ startGame();
 // - Allow lines to have more than 2 stations X
 // - Randomize Interval of Spawning Passengers
 // - Only pick up passengers if station is ahead
+// - Fix wrong train driving behaviour X
