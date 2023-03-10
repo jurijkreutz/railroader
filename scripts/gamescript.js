@@ -8,7 +8,7 @@ import { putStationsOnMap,
 const gameScreen = document.getElementById("gamescreen");
 export const gameSettings = {'screenHeight': window.getComputedStyle(gameScreen).height,
                              'startingStation': 'linz',
-                             'trainStandardCapacity': 20,
+                             'trainStandardCapacity': 200,
                              'priceForOneRide': 7,
                              'trainPrice': 800,
                              'trainTimeAtStation': 2000}; // default: 1000

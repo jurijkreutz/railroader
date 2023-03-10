@@ -141,25 +141,36 @@ export async function pickUpPassengers(trainId, stationName, lineId) {
     let currentLineObject = await findObjectBySpecificValue(currentLines, "lineId", lineId);
     let currentStationObject = await findObjectBySpecificValue(currentStations, "name", stationName);
     let currentTrainObject = await findObjectBySpecificValue(currentTrains, "trainId", trainId);
-    // Get index of current station to determine which are the next stations
-    // Next: Only pick up passengers for upcoming stations (not for last stations)
-    // Function also has to now if train is driving outward or inward
     for (const key in currentStationObject["passengers"]) {
         if (!(key in currentTrainObject["currentPassengers"])) {
             currentTrainObject["currentPassengers"][key] = 0;
         }
         if (currentLineObject["stations"].includes(key)) {
-            while (currentTrainObject["currentTotalPassengers"] < currentTrainObject["trainCapacity"]) {
-                if (currentStationObject["passengers"][key] == 0) {
-                    break;
+            const stationAhead = setStationsAhead(currentTrainObject, currentLineObject, currentStationObject, key);
+            if (stationAhead) {
+                while (currentTrainObject["currentTotalPassengers"] < currentTrainObject["trainCapacity"]) {
+                    if (currentStationObject["passengers"][key] == 0) {
+                        break;
+                    }
+                    currentTrainObject["currentPassengers"][key]++;
+                    currentTrainObject["currentTotalPassengers"]++
+                    currentStationObject["passengers"][key]--;
                 }
-                currentTrainObject["currentPassengers"][key]++;
-                currentTrainObject["currentTotalPassengers"]++
-                currentStationObject["passengers"][key]--;
             }
         }
     }
  }
+
+function setStationsAhead(currentTrainObject, currentLineObject, currentStationObject, station) {
+    const movingTrain = document.getElementById(`train-${currentTrainObject.trainId}`);
+    const currentStationIndex = currentLineObject.stations.indexOf(currentStationObject.name);
+    const stationToPickUpPassengersIndex = currentLineObject.stations.indexOf(station);
+    const stationAheadOnOutwardsTrip =  movingTrain.dataset.currentlyDriving === "out-to-last-station" &&
+                                        stationToPickUpPassengersIndex > currentStationIndex;
+    const stationAheadInwardsTrip = movingTrain.dataset.currentlyDriving === "back-to-first-station" &&
+                                    stationToPickUpPassengersIndex < currentStationIndex;
+    return stationAheadOnOutwardsTrip || stationAheadInwardsTrip;
+}
 
  export async function disembarkPassengers(trainId, stationName, lineId) {
     let currentLineObject = await findObjectBySpecificValue(currentLines, "lineId", lineId);
