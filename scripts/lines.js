@@ -27,7 +27,8 @@ export function newLine(currentClickedStations, gameScreen) {
     let trainStationList = []
     trainStationList.push(station1PositionsAndName);
     trainStationList.push(station2PositionsAndName);
-    let distanceBetweenPoints = getDistanceBetweenPoints(station1PositionsAndName, station2PositionsAndName, newLine);
+    let distanceBetweenPoints = getDistanceBetweenPoints(station1PositionsAndName, station2PositionsAndName);
+    newLine.style.width = distanceBetweenPoints + "px";
     getAngleBetweenPoints(station1PositionsAndName, station2PositionsAndName, distanceBetweenPoints, newLine);
     saveNewLine(lineColor, currentClickedStations, trainStationList);
     gameScreen.append(newLine);
@@ -49,7 +50,8 @@ function drawExpansionOfExistingLine(currentClickedStations, lineColor, gameScre
     let trainStationList = []
     trainStationList.push(station1PositionsAndName);
     trainStationList.push(station2PositionsAndName);
-    let distanceBetweenPoints = getDistanceBetweenPoints(station1PositionsAndName, station2PositionsAndName, expandedLine);
+    let distanceBetweenPoints = getDistanceBetweenPoints(station1PositionsAndName, station2PositionsAndName);
+    expandedLine.style.width = distanceBetweenPoints + "px";
     getAngleBetweenPoints(station1PositionsAndName, station2PositionsAndName, distanceBetweenPoints, expandedLine);
     gameScreen.append(expandedLine);
     return trainStationList;
@@ -125,10 +127,9 @@ function setLeftMostPositionAsStartingPoint(currentClickedStations, newLine) {
     newLine.style.top = parseInt(newLine.style.top) + 8 + "px";
 }
 
-function getDistanceBetweenPoints(positionsXAndYPoint1, positionsXAndYPoint2, newLine) {
+function getDistanceBetweenPoints(positionsXAndYPoint1, positionsXAndYPoint2) {
     let distanceBetweenPoints = Math.sqrt(Math.pow((positionsXAndYPoint2[0] - positionsXAndYPoint1[0]), 2)
                                         + Math.pow((positionsXAndYPoint2[1] - positionsXAndYPoint1[1]), 2));
-    newLine.style.width = distanceBetweenPoints + "px";
     return distanceBetweenPoints
 }
 
@@ -220,12 +221,21 @@ function initializeNextStationSetter(newTrain, lineNum) {
 
 async function sendTrainToPosition(newTrain, newPositionXandY) {
     newTrain.classList.remove('move-train-to-b');
+    newTrain.style['animation'] = '';
     newTrain.offsetWidth;
     newTrain.classList.add('move-train-to-b');
+    const oldPositionXandY = [parseInt(newTrain.style.left), parseInt(newTrain.style.bottom)];
+    const time = calculateTime(oldPositionXandY, newPositionXandY);
+    newTrain.style['animation'] = `train-movement-to-b ${time}s`;
     newTrain.style.setProperty('--my-start-left-pos', newTrain.style.left);
     newTrain.style.setProperty('--my-start-bottom-pos', newTrain.style.bottom);
     newTrain.style.setProperty('--my-end-left-pos', newPositionXandY[0] + "px");
     newTrain.style.setProperty('--my-end-bottom-pos', newPositionXandY[1] + "px");
+}
+
+function calculateTime(oldPositionXandY, newPositionXandY) {
+    const distanceBetweenPoints = getDistanceBetweenPoints(oldPositionXandY, newPositionXandY);
+    return distanceBetweenPoints/gameSettings['trainStandardSpeed'];
 }
 
 function showPickUpSign(newTrain) {

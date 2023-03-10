@@ -8,12 +8,13 @@ import { putStationsOnMap,
 const gameScreen = document.getElementById("gamescreen");
 export const gameSettings = {'screenHeight': window.getComputedStyle(gameScreen).height,
                              'startingStation': 'linz',
-                             'trainStandardCapacity': 20,
+                             'trainStandardCapacity': 40,
+                             'trainStandardSpeed': 35,
                              'priceForOneRide': 7,
                              'trainPrice': 800,
                              'trainTimeAtStation': 2000, // default: 1000
-                             'lineExpansionPrice': 3000,
-                             'newLinePrice': 6000}; 
+                             'lineExpansionPrice': 0, // default: 3000
+                             'newLinePrice': 0}; // default 6000
 
 let stationPositions = {'vienna': [110, 700],
                         'graz': [290, 605],
@@ -43,5 +44,5 @@ function startGame() {
 startGame();
 
 // TO-DOs:
-// - Set price for building new line / expanding
+// - Set price for building new line / expanding 
 // - Randomize Interval of Spawning Passengers
