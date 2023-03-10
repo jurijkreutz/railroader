@@ -183,6 +183,7 @@ function letTrainDrive(gameScreen, lineNum) {
                 await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 indexForNextStation++
+                console.log('next station: ' + trainStationList[indexForNextStation][2])
                 newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1;
                 await sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
             }
@@ -191,6 +192,7 @@ function letTrainDrive(gameScreen, lineNum) {
                 await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId)
                 indexForNextStation--
+                console.log('next station: ' + trainStationList[indexForNextStation][2])
                 newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) - 1;
                 await sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
             }
