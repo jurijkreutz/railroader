@@ -53,29 +53,8 @@ export function makeStationsClickable(stations, gameScreen) {
                     }
                     else {
                         console.log("Has line already")
-                        
-                        let wantsNewLine = confirm(`Do you want to create a new line?
-                        OK: New line (Price: ${gameSettings['newLinePrice']})
-                        Cancel: Add station to existing line (Price: ${gameSettings['lineExpansionPrice']})`);
-                        
-                        if (wantsNewLine) {
-                            if (currentBudget['money'] >= gameSettings['newLinePrice']) {
-                                currentBudget['money'] -= gameSettings['newLinePrice'];
-                                newLine(currentClickedStations, gameScreen);
-                            }
-                            else {
-                                alert('Not enough money.');
-                            }
-                        }
-                        else {
-                            if (currentBudget['money'] >= gameSettings['lineExpansionPrice']) {
-                                currentBudget['money'] -= gameSettings['lineExpansionPrice'];
-                                addStationToLine(currentClickedStations, gameScreen)
-                            }
-                            else {
-                                alert('Not enough money.');
-                            }
-                        }
+                        // TODO here: only allow line expansion from last station
+                        allowUserToAddOrExpandLine(gameScreen);
                     }
                     currentClickedStations.forEach(station => {
                         station.classList.remove('start-station-animation');
@@ -85,6 +64,31 @@ export function makeStationsClickable(stations, gameScreen) {
                     }
             }
         })
+    }
+}
+
+function allowUserToAddOrExpandLine(gameScreen) {
+    let wantsNewLine = confirm(`Do you want to create a new line?
+                        OK: New line (Price: ${gameSettings['newLinePrice']})
+                        Cancel: Add station to existing line (Price: ${gameSettings['lineExpansionPrice']})`);
+
+    if (wantsNewLine) {
+        if (currentBudget['money'] >= gameSettings['newLinePrice']) {
+            currentBudget['money'] -= gameSettings['newLinePrice'];
+            newLine(currentClickedStations, gameScreen);
+        }
+        else {
+            alert('Not enough money.');
+        }
+    }
+    else {
+        if (currentBudget['money'] >= gameSettings['lineExpansionPrice']) {
+            currentBudget['money'] -= gameSettings['lineExpansionPrice'];
+            addStationToLine(currentClickedStations, gameScreen);
+        }
+        else {
+            alert('Not enough money.');
+        }
     }
 }
 
