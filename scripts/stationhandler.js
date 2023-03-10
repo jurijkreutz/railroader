@@ -1,5 +1,7 @@
+import { gameSettings } from "./gamescript.js";
 import { newLine, currentLines, addStationToLine } from "./lines.js";
 import { stationsAllowed } from "./stathandler.js";
+import { currentBudget } from "./lines.js";
 
 let currentClickedStations = [];
 
@@ -52,13 +54,27 @@ export function makeStationsClickable(stations, gameScreen) {
                     else {
                         console.log("Has line already")
                         
-                        let wantsNewLine = confirm("Do you want to create a new line? Cancel to add station to existing line.");
+                        let wantsNewLine = confirm(`Do you want to create a new line?
+                        OK: New line (Price: ${gameSettings['newLinePrice']})
+                        Cancel: Add station to existing line (Price: ${gameSettings['lineExpansionPrice']})`);
                         
                         if (wantsNewLine) {
-                            newLine(currentClickedStations, gameScreen);
+                            if (currentBudget['money'] >= gameSettings['newLinePrice']) {
+                                currentBudget['money'] -= gameSettings['newLinePrice'];
+                                newLine(currentClickedStations, gameScreen);
+                            }
+                            else {
+                                alert('Not enough money.');
+                            }
                         }
                         else {
-                            addStationToLine(currentClickedStations, gameScreen)
+                            if (currentBudget['money'] >= gameSettings['lineExpansionPrice']) {
+                                currentBudget['money'] -= gameSettings['lineExpansionPrice'];
+                                addStationToLine(currentClickedStations, gameScreen)
+                            }
+                            else {
+                                alert('Not enough money.');
+                            }
                         }
                     }
                     currentClickedStations.forEach(station => {
