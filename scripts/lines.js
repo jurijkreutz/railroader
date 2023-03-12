@@ -277,22 +277,41 @@ export async function addTrainToLine(lineId, gameScreen) {
 
 export async function addStationToLine(currentClickedStations, gameScreen) {
     let lineToBeExpanded = await getLineToBeExpandedFromClickedStations(currentClickedStations, currentLines);
-    currentClickedStations.forEach((station) => {
-        if (!lineToBeExpanded["stations"].includes(station.dataset.stationName)) {
-            lineToBeExpanded["stations"].push(station.dataset.stationName);
-            let stationObject = {
-                "name": station.dataset.stationName,
-                "line": [lineToBeExpanded["color"], ],
-                "passengers": {}
+    const isLastStation = checkIfExpansionFromLastStation(currentClickedStations, lineToBeExpanded);
+    if (isLastStation) {
+        currentClickedStations.forEach((station) => {
+            if (!lineToBeExpanded["stations"].includes(station.dataset.stationName)) {
+                lineToBeExpanded["stations"].push(station.dataset.stationName);
+                let stationObject = {
+                    "name": station.dataset.stationName,
+                    "line": [lineToBeExpanded["color"], ],
+                    "passengers": {}
+                }
+                currentStations.push(stationObject);
             }
-            currentStations.push(stationObject);
-        }
-    })
-    let stationDetailList = drawExpansionOfExistingLine(currentClickedStations, lineToBeExpanded["color"], gameScreen);
-    stationDetailList.forEach((station) => {
-        if (lineToBeExpanded["stationDetails"].filter((existingStation) => existingStation[2] === station[2]).length === 0) {
-            lineToBeExpanded["stationDetails"].push(station);
-        }
-    })
-    markLineStations(lineToBeExpanded["stationDetails"]);
+        })
+        let stationDetailList = drawExpansionOfExistingLine(currentClickedStations, lineToBeExpanded["color"], gameScreen);
+        stationDetailList.forEach((station) => {
+            if (lineToBeExpanded["stationDetails"].filter((existingStation) => existingStation[2] === station[2]).length === 0) {
+                lineToBeExpanded["stationDetails"].push(station);
+            }
+        })
+        markLineStations(lineToBeExpanded["stationDetails"]);
+    }
+    else {
+        alert('Expansion only allowed from last station!');
+    }
 }
+function checkIfExpansionFromLastStation(currentClickedStations, lineToBeExpanded) {
+    let stationToExpandLineFrom;
+    currentClickedStations.forEach((station) => {
+        if (lineToBeExpanded["stations"].includes(station.dataset.stationName)) {
+            stationToExpandLineFrom = station.dataset.stationName;
+        }
+    });
+    if (stationToExpandLineFrom === lineToBeExpanded["stations"][lineToBeExpanded["stations"].length - 1]) {
+        return true;
+    }
+    return false;
+}
+

@@ -54,6 +54,7 @@ export function makeStationsClickable(stations, gameScreen) {
                     else {
                         console.log("Has line already")
                         // TODO here: only allow line expansion from last station
+                        // If station last in line, allow - else: error
                         allowUserToAddOrExpandLine(gameScreen);
                     }
                     currentClickedStations.forEach(station => {
