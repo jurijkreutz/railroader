@@ -87,8 +87,8 @@ p {
     z-index: 899;
 }
 
-.start-station {
-    background-color: #21B9FC;
+.start-end-station {
+    background-color: #21B9FC !important;
 }
 
 .start-station-animation {
@@ -113,6 +113,10 @@ p {
 
 .active-station {
     background-color: #FCF208;
+}
+
+.allowed-station {
+    background-color: #bcbcbb;
 }
 
 .chosen-station {

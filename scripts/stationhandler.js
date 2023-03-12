@@ -107,7 +107,7 @@ function checkIfStationHasLineAlready(currentClickedStations) {
 
 export function prepareStartStation(startStationName) {
     const startStation = document.getElementById(`station-${startStationName}`);
-    startStation.classList.add('start-station');
+    startStation.classList.add('allowed-station');
     startStation.classList.add('start-station-animation');
     stationsAllowed.push(startStation.dataset.stationName);
 }
@@ -137,6 +137,22 @@ export function findNearestStation(stations, startStationName) {
 
 export function prepareStation(station) {
     const stationToPrepare = document.getElementById(`station-${station["name"]}`);
-    stationToPrepare.classList.add('active-station');
+    stationToPrepare.classList.add('allowed-station');
     stationsAllowed.push(station["name"]);
+}
+
+export function markLineStations(stationList) {
+    for (let index = 0; index < stationList.length; index++) {
+        const stationName = stationList[index][2];
+        const stationToMark = document.getElementById(`station-${stationName}`);
+        if (index === 0 || index === stationList.length-1) {
+            stationToMark.classList.remove('active-station');
+            stationToMark.classList.add('start-end-station');
+        }
+        else {
+            stationToMark.classList.remove('allowed-station');
+            stationToMark.classList.remove('start-end-station');
+            stationToMark.classList.add('active-station');
+        }
+    }
 }

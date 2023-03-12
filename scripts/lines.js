@@ -1,6 +1,7 @@
 import { gameSettings } from "./gamescript.js";
 import { pickUpPassengers, disembarkPassengers } from "./stathandler.js";
 import { findObjectBySpecificValue, getLineToBeExpandedFromClickedStations } from "./helpers.js";
+import { markLineStations } from "./stationhandler.js";
 
 const lineColors = ['#e58871',
                     '#d0c64c',
@@ -58,6 +59,7 @@ function drawExpansionOfExistingLine(currentClickedStations, lineColor, gameScre
 }
 
 async function saveNewLine(lineColor, currentClickedStations, trainStationList) {
+    markLineStations(trainStationList);
     let lineId = currentLines.length+1;
     let trainObject = {
         "lineId": lineId,
@@ -292,4 +294,5 @@ export async function addStationToLine(currentClickedStations, gameScreen) {
             lineToBeExpanded["stationDetails"].push(station);
         }
     })
+    markLineStations(lineToBeExpanded["stationDetails"]);
 }
