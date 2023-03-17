@@ -161,6 +161,8 @@ function handleAngleEdgeCases(rotateDegrees, distanceBetweenPoints, horizontalDi
     return rotateDegrees;
 }
 
+let addedStationAtBeginning = false;
+
 function letTrainDrive(gameScreen, lineNum) {
     let lineId = lineNum + 1 
     let newTrain = document.createElement('div');
@@ -182,19 +184,29 @@ function letTrainDrive(gameScreen, lineNum) {
         let trainStationList = currentLines[lineNum]["stationDetails"];
             if (newTrain.dataset.startDirection == "out") {
                 newTrain.dataset.startDirection = "none";
+                if (addedStationAtBeginning) {
+                    indexForNextStation++;
+                    addedStationAtBeginning = false;
+                }
                 await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 indexForNextStation++
-                console.log('next station: ' + trainStationList[indexForNextStation][2])
+                console.log(indexForNextStation);
+                console.log('(out) next station: ' + trainStationList[indexForNextStation][2])
                 newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1;
                 await sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
             }
             else if (newTrain.dataset.startDirection == "in"){
                 newTrain.dataset.startDirection = "none";
+                if (addedStationAtBeginning) {
+                    indexForNextStation++;
+                    addedStationAtBeginning = false;
+                }
                 await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId)
                 indexForNextStation--
-                console.log('next station: ' + trainStationList[indexForNextStation][2])
+                console.log(indexForNextStation);
+                console.log('(in) next station: ' + trainStationList[indexForNextStation][2])
                 newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) - 1;
                 await sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
             }
@@ -205,20 +217,32 @@ function letTrainDrive(gameScreen, lineNum) {
 function initializeNextStationSetter(newTrain, lineNum) {
     newTrain.addEventListener("animationend", () => {
         let trainStationList = currentLines[lineNum]["stationDetails"];
+        if (addedStationAtBeginning) {
+            newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1
+        }
         showPickUpSign(newTrain);
         newTrain.style.left = trainStationList[parseInt(newTrain.dataset.currentDirection)][0] + "px";
         newTrain.style.bottom = trainStationList[parseInt(newTrain.dataset.currentDirection)][1] + "px";
+        console.log("starting onboarding")
+        let lineSizeBeforeOnboarding = trainStationList.length;
         setTimeout(function () {
+            let lineSizeAfterOnboarding = trainStationList.length;
+            if (addedStationAtBeginning && lineSizeAfterOnboarding > lineSizeBeforeOnboarding) {
+                newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1;
+                console.log("added station. current index = " + newTrain.dataset.currentDirection);
+            }
             if (newTrain.dataset.currentDirection == 0) {
                 newTrain.dataset.currentlyDriving = "out-to-last-station";
             }
-            if (newTrain.dataset.currentDirection == trainStationList.length - 1 || newTrain.dataset.currentlyDriving == "back-to-first-station") {
+            if (newTrain.dataset.currentDirection >= trainStationList.length - 1 || newTrain.dataset.currentlyDriving == "back-to-first-station") {
                 newTrain.dataset.startDirection = "in";
                 newTrain.dataset.currentlyDriving = "back-to-first-station";
             }
             else {
                 newTrain.dataset.startDirection = "out";
             }
+            newTrain.dataset.onboarding = "false" 
+            console.log("ending onboarding")
         }, gameSettings.trainTimeAtStation);
     }, false);
 }
@@ -277,8 +301,8 @@ export async function addTrainToLine(lineId, gameScreen) {
 
 export async function addStationToLine(currentClickedStations, gameScreen) {
     let lineToBeExpanded = await getLineToBeExpandedFromClickedStations(currentClickedStations, currentLines);
-    const isLastStation = checkIfExpansionFromLastStation(currentClickedStations, lineToBeExpanded);
-    if (isLastStation) {
+    const stationToExpandLineFrom = checkStationToExpandLineFrom(currentClickedStations, lineToBeExpanded);
+    if (stationToExpandLineFrom == "lastStation") {
         currentClickedStations.forEach((station) => {
             if (!lineToBeExpanded["stations"].includes(station.dataset.stationName)) {
                 lineToBeExpanded["stations"].push(station.dataset.stationName);
@@ -298,11 +322,35 @@ export async function addStationToLine(currentClickedStations, gameScreen) {
         })
         markLineStations(lineToBeExpanded["stationDetails"]);
     }
+    else if (stationToExpandLineFrom == "firstStation") {
+        alert('Yet to be implemented');
+        // start of experiment
+        currentClickedStations.forEach((station) => {
+            if (!lineToBeExpanded["stations"].includes(station.dataset.stationName)) {
+                lineToBeExpanded["stations"].unshift(station.dataset.stationName);
+                let stationObject = {
+                    "name": station.dataset.stationName,
+                    "line": [lineToBeExpanded["color"], ],
+                    "passengers": {}
+                }
+                currentStations.push(stationObject);
+            }
+        })
+        let stationDetailList = drawExpansionOfExistingLine(currentClickedStations, lineToBeExpanded["color"], gameScreen);
+        stationDetailList.forEach((station) => {
+            if (lineToBeExpanded["stationDetails"].filter((existingStation) => existingStation[2] === station[2]).length === 0) {
+                lineToBeExpanded["stationDetails"].unshift(station);
+            }
+        })
+        markLineStations(lineToBeExpanded["stationDetails"]);
+        addedStationAtBeginning = true;
+        // end of experiment
+    }
     else {
-        alert('Expansion only allowed from last station!');
+        alert('Expansion only allowed from last or first station!');
     }
 }
-function checkIfExpansionFromLastStation(currentClickedStations, lineToBeExpanded) {
+function checkStationToExpandLineFrom(currentClickedStations, lineToBeExpanded) {
     let stationToExpandLineFrom;
     currentClickedStations.forEach((station) => {
         if (lineToBeExpanded["stations"].includes(station.dataset.stationName)) {
@@ -310,8 +358,11 @@ function checkIfExpansionFromLastStation(currentClickedStations, lineToBeExpande
         }
     });
     if (stationToExpandLineFrom === lineToBeExpanded["stations"][lineToBeExpanded["stations"].length - 1]) {
-        return true;
+        return "lastStation";
     }
-    return false;
+    else if (stationToExpandLineFrom === lineToBeExpanded["stations"][0]) {
+        return "firstStation";
+    }
+    return "otherStation";
 }
 
