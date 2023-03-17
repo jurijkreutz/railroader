@@ -44,5 +44,4 @@ function startGame() {
 startGame();
 
 // TO-DOs:
-// - Set price for building new line / expanding 
 // - Randomize Interval of Spawning Passengers
