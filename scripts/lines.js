@@ -161,8 +161,6 @@ function handleAngleEdgeCases(rotateDegrees, distanceBetweenPoints, horizontalDi
     return rotateDegrees;
 }
 
-let addedStationAtBeginning = false;
-
 function letTrainDrive(gameScreen, lineNum) {
     let lineId = lineNum + 1 
     let newTrain = document.createElement('div');
