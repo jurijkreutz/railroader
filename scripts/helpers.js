@@ -28,3 +28,7 @@ export async function getLineToBeExpandedFromClickedStations(currentClickedStati
     });
     return lineToBeExpanded;
 }
+
+export function getAllHtmlTrainObjectsByLineId(lineId) {
+    return document.querySelectorAll(`[data-line-id="${lineId}"]`);
+}

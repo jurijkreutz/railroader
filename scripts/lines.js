@@ -1,6 +1,6 @@
 import { gameSettings } from "./gamescript.js";
 import { pickUpPassengers, disembarkPassengers } from "./stathandler.js";
-import { findObjectBySpecificValue, getLineToBeExpandedFromClickedStations } from "./helpers.js";
+import { findObjectBySpecificValue, getLineToBeExpandedFromClickedStations, getAllHtmlTrainObjectsByLineId } from "./helpers.js";
 import { markLineStations } from "./stationhandler.js";
 
 const lineColors = ['#e58871',
@@ -179,14 +179,15 @@ function letTrainDrive(gameScreen, lineNum) {
     newTrain.dataset.startDirection = "out";
     newTrain.dataset.currentDirection = 0;
     newTrain.dataset.myId = newTrainId;
+    newTrain.dataset.lineId = lineId;
     let indexForNextStation = 0
     setInterval(async () => {
         let trainStationList = currentLines[lineNum]["stationDetails"];
             if (newTrain.dataset.startDirection == "out") {
                 newTrain.dataset.startDirection = "none";
-                if (addedStationAtBeginning) {
+                if (newTrain.dataset.addedStationAtBeginning === "true") {
                     indexForNextStation++;
-                    addedStationAtBeginning = false;
+                    newTrain.dataset.addedStationAtBeginning = "false";
                 }
                 await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
@@ -198,9 +199,9 @@ function letTrainDrive(gameScreen, lineNum) {
             }
             else if (newTrain.dataset.startDirection == "in"){
                 newTrain.dataset.startDirection = "none";
-                if (addedStationAtBeginning) {
+                if (newTrain.dataset.addedStationAtBeginning === "true") {
                     indexForNextStation++;
-                    addedStationAtBeginning = false;
+                    newTrain.dataset.addedStationAtBeginning = "false";
                 }
                 await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId)
@@ -217,7 +218,7 @@ function letTrainDrive(gameScreen, lineNum) {
 function initializeNextStationSetter(newTrain, lineNum) {
     newTrain.addEventListener("animationend", () => {
         let trainStationList = currentLines[lineNum]["stationDetails"];
-        if (addedStationAtBeginning) {
+        if (newTrain.dataset.addedStationAtBeginning === "true") {
             newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1
         }
         showPickUpSign(newTrain);
@@ -227,9 +228,8 @@ function initializeNextStationSetter(newTrain, lineNum) {
         let lineSizeBeforeOnboarding = trainStationList.length;
         setTimeout(function () {
             let lineSizeAfterOnboarding = trainStationList.length;
-            if (addedStationAtBeginning && lineSizeAfterOnboarding > lineSizeBeforeOnboarding) {
+            if (newTrain.dataset.addedStationAtBeginning === "true" && lineSizeAfterOnboarding > lineSizeBeforeOnboarding) {
                 newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1;
-                console.log("added station. current index = " + newTrain.dataset.currentDirection);
             }
             if (newTrain.dataset.currentDirection == 0) {
                 newTrain.dataset.currentlyDriving = "out-to-last-station";
@@ -324,7 +324,6 @@ export async function addStationToLine(currentClickedStations, gameScreen) {
     }
     else if (stationToExpandLineFrom == "firstStation") {
         alert('Yet to be implemented');
-        // start of experiment
         currentClickedStations.forEach((station) => {
             if (!lineToBeExpanded["stations"].includes(station.dataset.stationName)) {
                 lineToBeExpanded["stations"].unshift(station.dataset.stationName);
@@ -343,8 +342,9 @@ export async function addStationToLine(currentClickedStations, gameScreen) {
             }
         })
         markLineStations(lineToBeExpanded["stationDetails"]);
-        addedStationAtBeginning = true;
-        // end of experiment
+        // TODO: get all HTML object trains of a line, set their addedStatAtBeginning to true
+        const lineTrains = getAllHtmlTrainObjectsByLineId(lineToBeExpanded["lineId"]);
+        lineTrains.forEach(train => train.dataset.addedStationAtBeginning = "true");
     }
     else {
         alert('Expansion only allowed from last or first station!');
