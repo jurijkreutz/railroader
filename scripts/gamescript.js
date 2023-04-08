@@ -6,7 +6,10 @@ import { putStationsOnMap,
          prepareStation } from "./stationhandler.js";
 
 const gameScreen = document.getElementById("gamescreen");
-export const gameSettings = {'screenHeight': window.getComputedStyle(gameScreen).height,
+const startScreen = document.getElementById("startscreen");
+
+export const gameSettings = {'version': 0.1,
+                             'screenHeight': window.getComputedStyle(gameScreen).height,
                              'startingStation': 'linz',
                              'trainStandardCapacity': 40,
                              'trainStandardSpeed': 35,
@@ -41,7 +44,17 @@ function startGame() {
     console.log(`The first destination of your passengers is ${nearestStation["name"].toUpperCase()}.`);
 }
 
-startGame();
+function showStartScreen() {
+    const version = document.getElementById('version');
+    version.innerText = 'Version ' + gameSettings.version;
+    const clickableButton = document.getElementById('clickable-button');
+    clickableButton.addEventListener('click', () => {
+        startGame();
+        startScreen.style = 'display: none';
+    })
+}
+
+showStartScreen();
 
 // TO-DOs:
 // - Randomize Interval of Spawning Passengers
