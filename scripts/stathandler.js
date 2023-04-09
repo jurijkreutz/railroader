@@ -2,6 +2,7 @@ import { gameSettings } from "./gamescript.js";
 import { currentLines, currentStations, currentTrains, currentBudget, addTrainToLine } from "./lines.js";
 import { findObjectBySpecificValue } from "./helpers.js";
 import { prepareStation } from "./stationhandler.js";
+import { checkForUnlockedAchievements } from "./achievements.js";
 
 let moneyText = document.getElementById("money-text");
 let lineText = document.getElementById("line-text");
@@ -17,6 +18,7 @@ export function initStatisticUpdate() {
         lineText.innerText = `Lines: ${currentLines.length}`;
         passengersText.innerText = `Pax transported: ${sumPassengersFromAllLines()}`
         trainInfoContainer.innerHTML = getTrainInfo();
+        checkForUnlockedAchievements();
     }, 50);
 }
 

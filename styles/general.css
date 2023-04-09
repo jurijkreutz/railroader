@@ -58,7 +58,7 @@ p {
 
 #gamescreen {
     position: relative;
-    margin-top: 50px;
+    margin-top: 80px;
     margin-left: auto;
     margin-right: auto;
     width: 800px;
@@ -78,21 +78,21 @@ p {
     gap: 10px;
 }
 
-#general {
-    padding: 30px;
-    background-color: #0C649C;
+#general, #trains {
+    padding: 20px;
     color: white;
     flex-basis: 0;
     flex: 1 1 0px;
+    border: 10px solid #00ab88;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#general {
+    background-color: #03896f;
 }
 
 #trains {
-    padding: 30px;
-    background-color: #9C9A14;
-    color: white;
-    width: 50;
-    flex-basis: 0;
-    flex: 1 1 0px;
+    background-color: #03896f;
 }
 
 #train-info {
@@ -268,4 +268,49 @@ p {
   50% { opacity: 1; }
 }
 
+/* achievements css */
 
+#achievement {
+    display: none;
+    background-image: url("/styles/source/achievement.png");
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+    background-color: #f3df9e;
+    width: 40%;
+    padding: 10px;
+    border: 5px solid #e38f2c;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#achievement-header {
+    font-weight: 600;
+}
+
+#achievement-content {
+    padding-right: 80px;
+}
+
+.show-achievement-box {
+    /* fade in box */
+    animation-name: achievement-animation;
+    animation-iteration-count: 1;
+    animation-duration: 500ms;
+}
+
+@keyframes achievement-animation{
+    from {opacity: 0;}
+    to {opacity: 1;}
+    }
+
+.fadeout-achievement-box {
+    /* fade in box */
+    animation-name: fadeout-achievement-animation;
+    animation-iteration-count: 1;
+    animation-duration: 500ms;
+}
+
+@keyframes fadeout-achievement-animation{
+    from {opacity: 1;}
+    to {opacity: 0;}
+    }

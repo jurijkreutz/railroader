@@ -44,6 +44,14 @@ function startGame() {
     console.log(`The first destination of your passengers is ${nearestStation["name"].toUpperCase()}.`);
 }
 
+// Debug Mode
+/*
+startScreen.style = 'display: none';
+startGame();
+*/
+
+// Normal Mode with Start Screen
+
 function showStartScreen() {
     const version = document.getElementById('version');
     version.innerText = 'Version ' + gameSettings.version;
@@ -57,6 +65,9 @@ function showStartScreen() {
 showStartScreen();
 
 // TO-DOs:
-// - Randomize Interval of Spawning Passengers
+// - Randomize Interval of Spawning Passengers (general improvement, gradual upwards trend in spawning speed)
 // - Add Loosing Condition? (If more than ... players at a station: lost)
-// - Add Game Events: Achievements (?), Track Breakdowns (?)
+// - Add Game Events: Track Breakdowns (?)
+// - Add more Achievements
+// - Add check if two lines have the same ending station and user tries to expand a line from there
+// - Add Music
