@@ -224,5 +224,5 @@ export function initStationUpdate(stations) {
         stationToAdd["name"] = randomStation.dataset.stationName;
         console.log('station to add: ' + stationToAdd["name"]);
         prepareStation(stationToAdd);
-    }, 15000);
+    }, gameSettings.timeBetweenStationSpawn*1000);
 }

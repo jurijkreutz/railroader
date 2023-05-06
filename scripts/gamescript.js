@@ -11,6 +11,7 @@ const startScreen = document.getElementById("startscreen");
 export const gameSettings = {'version': 0.1,
                              'screenHeight': window.getComputedStyle(gameScreen).height,
                              'startingStation': 'linz',
+                             'timeBetweenStationSpawn': 30,
                              'maxWaitTimeForConnection': 25,
                              'trainStandardCapacity': 40,
                              'trainStandardSpeed': 35,
@@ -84,7 +85,7 @@ export function stopGame(reason) {
 
 // TO-DOs:
 // - Add Story & Freestyle Mode
-// - Add max time that a city is waiting for rail connection
+// - Add Loosing Condition: Player looses if more than x people at station
 // - Randomize Interval of Spawning Passengers (general improvement, gradual upwards trend in spawning speed)
 // - Add Loosing Condition? (If more than ... players at a station: lost)
 // - Add Game Events: Track Breakdowns (?)
