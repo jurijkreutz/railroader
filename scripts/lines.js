@@ -85,7 +85,8 @@ async function saveNewLine(lineColor, currentClickedStations, trainStationList) 
             let stationObject = {
                 "name": currentClickedStations[index].dataset.stationName,
                 "line": [lineColor, ],
-                "passengers": {}
+                "passengers": {},
+                "currentTotalPassengers": 0
             }
             currentStations.push(stationObject);
         }

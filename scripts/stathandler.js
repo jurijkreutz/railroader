@@ -44,6 +44,7 @@ export function initPassengerHandling() {
 }
 
 function initStationPassengerInfo() {
+    console.log(gameSettings.maxPeopleAtStation/2)
     setInterval(() => {
         for (let index = 0; index < currentStations.length; index++) {
             const station = document.getElementById(`station-${currentStations[index]['name']}`);
@@ -57,6 +58,12 @@ function initStationPassengerInfo() {
                 stationCounter.innerHTML += key.substr(0,3) + ":" + currentStations[index]["passengers"][key] + "<br>";
             }
             station.innerHTML = "";
+            if (currentStations[index]["currentTotalPassengers"] >= (gameSettings.maxPeopleAtStation/2)) {
+                stationCounter.style = 'background-color: yellow !important';
+            }
+            else {
+                stationCounter.style = 'background-color: white';
+            }
             station.appendChild(stationName);
             station.appendChild(stationCounter);
         }
@@ -86,6 +93,7 @@ async function initRandomPassengerSpawning() {
             }
         }
         randomStation["passengers"][destinationToSpawnNewPassengerFor] += 1;
+        randomStation["currentTotalPassengers"] += 1;
     }
     let passengerSpawnCounter = setSpawnSpeed();
     setTimeout(initRandomPassengerSpawning, passengerSpawnCounter);
@@ -156,8 +164,9 @@ export async function pickUpPassengers(trainId, stationName, lineId) {
                         break;
                     }
                     currentTrainObject["currentPassengers"][key]++;
-                    currentTrainObject["currentTotalPassengers"]++
+                    currentTrainObject["currentTotalPassengers"]++;
                     currentStationObject["passengers"][key]--;
+                    currentStationObject["currentTotalPassengers"]--;
                 }
             }
         }

@@ -11,8 +11,9 @@ const startScreen = document.getElementById("startscreen");
 export const gameSettings = {'version': 0.1,
                              'screenHeight': window.getComputedStyle(gameScreen).height,
                              'startingStation': 'linz',
-                             'timeBetweenStationSpawn': 30,
-                             'maxWaitTimeForConnection': 25,
+                             'timeBetweenStationSpawn': 50,
+                             'maxWaitTimeForConnection': 35,
+                             'maxPeopleAtStation': 50,
                              'trainStandardCapacity': 40,
                              'trainStandardSpeed': 35,
                              'priceForOneRide': 7,
@@ -85,7 +86,8 @@ export function stopGame(reason) {
 
 // TO-DOs:
 // - Add Story & Freestyle Mode
-// - Add Loosing Condition: Player looses if more than x people at station
+// - Stations shouldn't spawn randomly, but close to already existing stations
+// - Add Loosing Condition: Player looses if more than x people waiting for train to X
 // - Randomize Interval of Spawning Passengers (general improvement, gradual upwards trend in spawning speed)
 // - Add Loosing Condition? (If more than ... players at a station: lost)
 // - Add Game Events: Track Breakdowns (?)
