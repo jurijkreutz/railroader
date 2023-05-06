@@ -6,7 +6,7 @@ body {
 
 #startscreen {
     position: fixed;
-    background-image: url("startscreen-bg.jpg");
+    background: url("startscreen-bg.jpg"), red;
     background-size: cover;
     width: 100%;
     height: 100%;
@@ -132,7 +132,7 @@ p {
     border-style: solid;
     border-width: 8px;
     border-color: white;
-    background-color: #B3182E;
+    background-color: #929292;
     z-index: 899;
 }
 
@@ -165,7 +165,7 @@ p {
 }
 
 .allowed-station {
-    background-color: #bcbcbb;
+    background-color: #FCF208;
 }
 
 .chosen-station {
@@ -194,6 +194,18 @@ p {
     padding: 5px;
     width: 52px;
 }
+
+.station-countdown {
+    background: linear-gradient(to right, rgb(143, 6, 6) 50%, #03896f 0);
+    background-size: 200% 100%;
+    background-position: right;
+}
+
+@keyframes makeItfadeIn {
+    100% {
+      background-position: left;
+    }
+  }
 
 
 /* line css */
@@ -314,3 +326,6 @@ p {
     from {opacity: 1;}
     to {opacity: 0;}
     }
+
+
+/* loose screen */

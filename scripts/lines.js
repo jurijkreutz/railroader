@@ -190,7 +190,6 @@ function letTrainDrive(gameScreen, lineNum) {
                 await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 indexForNextStation++
-                console.log(newTrain.dataset.myId + ' (out) next station: ' + trainStationList[indexForNextStation][2])
                 newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) + 1;
                 await sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
             }
@@ -203,7 +202,6 @@ function letTrainDrive(gameScreen, lineNum) {
                 await disembarkPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId);
                 await pickUpPassengers(newTrainId, trainStationList[indexForNextStation][2], lineId)
                 indexForNextStation--
-                console.log(newTrain.dataset.myId + ' (in) next station: ' + trainStationList[indexForNextStation][2])
                 newTrain.dataset.currentDirection = parseInt(newTrain.dataset.currentDirection) - 1;
                 await sendTrainToPosition(newTrain, trainStationList[parseInt(newTrain.dataset.currentDirection)], trainStationList)
             }
@@ -220,7 +218,6 @@ function initializeNextStationSetter(newTrain, lineNum) {
         showPickUpSign(newTrain);
         newTrain.style.left = trainStationList[parseInt(newTrain.dataset.currentDirection)][0] + "px";
         newTrain.style.bottom = trainStationList[parseInt(newTrain.dataset.currentDirection)][1] + "px";
-        console.log("starting onboarding")
         let lineSizeBeforeOnboarding = trainStationList.length;
         setTimeout(function () {
             let lineSizeAfterOnboarding = trainStationList.length;
@@ -238,7 +235,6 @@ function initializeNextStationSetter(newTrain, lineNum) {
                 newTrain.dataset.startDirection = "out";
             }
             newTrain.dataset.onboarding = "false" 
-            console.log("ending onboarding")
         }, gameSettings.trainTimeAtStation);
     }, false);
 }

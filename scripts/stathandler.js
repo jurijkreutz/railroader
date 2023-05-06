@@ -215,12 +215,14 @@ function setStationsAhead(currentTrainObject, currentLineObject, currentStationO
 
 export function initStationUpdate(stations) {
     setInterval(() => {
-        const randomStation = stations[Math.floor(Math.random() * stations.length)];
-        while (randomStation in stationsAllowed) {
+        let randomStation = stations[Math.floor(Math.random() * stations.length)];
+        console.log(stationsAllowed);
+        while (stationsAllowed.includes(randomStation.dataset.stationName)) {
             randomStation = stations[Math.floor(Math.random() * stations.length)];
         }
         let stationToAdd = {};
         stationToAdd["name"] = randomStation.dataset.stationName;
+        console.log('station to add: ' + stationToAdd["name"]);
         prepareStation(stationToAdd);
     }, 15000);
 }

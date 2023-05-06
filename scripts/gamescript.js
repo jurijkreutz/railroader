@@ -11,6 +11,7 @@ const startScreen = document.getElementById("startscreen");
 export const gameSettings = {'version': 0.1,
                              'screenHeight': window.getComputedStyle(gameScreen).height,
                              'startingStation': 'linz',
+                             'maxWaitTimeForConnection': 25,
                              'trainStandardCapacity': 40,
                              'trainStandardSpeed': 35,
                              'priceForOneRide': 7,
@@ -64,7 +65,26 @@ function showStartScreen() {
 
 showStartScreen();
 
+export function stopGame(reason) {
+    const trains = document.getElementsByClassName('train');
+    while(trains.length > 0){
+        trains[0].parentNode.removeChild(trains[0]);
+    }
+    startScreen.style = 'display: fixed';
+    startScreen.style = 'background-blend-mode: multiply'
+    const startButton = document.getElementById('button');
+    startButton.style = 'display: none';
+    const version = document.getElementById('version');
+    version.style = 'text-shadow: 1px 1px 1px BLACK';
+    version.innerHTML = `<br>You lost!<br>${reason}`;
+    setTimeout(() => {
+        window.location.reload();
+    }, 9000);
+}
+
 // TO-DOs:
+// - Add Story & Freestyle Mode
+// - Add max time that a city is waiting for rail connection
 // - Randomize Interval of Spawning Passengers (general improvement, gradual upwards trend in spawning speed)
 // - Add Loosing Condition? (If more than ... players at a station: lost)
 // - Add Game Events: Track Breakdowns (?)

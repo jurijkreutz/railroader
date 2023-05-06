@@ -1,7 +1,8 @@
-import { gameSettings } from "./gamescript.js";
-import { newLine, currentLines, addStationToLine } from "./lines.js";
+import { gameSettings, stopGame } from "./gamescript.js";
+import { newLine, currentLines, addStationToLine, currentStations } from "./lines.js";
 import { stationsAllowed } from "./stathandler.js";
 import { currentBudget } from "./lines.js";
+import { findObjectBySpecificValue } from "./helpers.js";
 
 let currentClickedStations = [];
 
@@ -43,19 +44,19 @@ export function makeStationsClickable(stations, gameScreen) {
                 currentClickedStations[currentClickedStations.length] = event.currentTarget;
                 station.classList.add('chosen-station');
                 if (currentClickedStations.length >= 2) {
+                    console.log(currentClickedStations);
                     let stationHasOtherLinesAlready = checkIfStationHasLineAlready(currentClickedStations);
                     if (!stationHasOtherLinesAlready) {
                         newLine(currentClickedStations, gameScreen);
                         currentClickedStations.forEach(station => {
                             station.classList.remove('start-station-animation');
+                            station.classList.remove('station-countdown');
                             setTimeout(() => {station.classList.remove('chosen-station')}, 2000);
                         });
                     }
                     else {
                         console.log("Has line already")
-                        // TODO here: only allow line expansion from last station
-                        // If station last in line, allow - else: error
-                        allowUserToAddOrExpandLine(gameScreen);
+                        allowUserToAddOrExpandLine(gameScreen, currentClickedStations);
                     }
                     currentClickedStations.forEach(station => {
                         station.classList.remove('start-station-animation');
@@ -68,7 +69,7 @@ export function makeStationsClickable(stations, gameScreen) {
     }
 }
 
-function allowUserToAddOrExpandLine(gameScreen) {
+function allowUserToAddOrExpandLine(gameScreen, currentClickedStations) {
     let wantsNewLine = confirm(`Do you want to create a new line?
                         OK: New line (Price: ${gameSettings['newLinePrice']})
                         Cancel: Add station to existing line (Price: ${gameSettings['lineExpansionPrice']})`);
@@ -77,6 +78,9 @@ function allowUserToAddOrExpandLine(gameScreen) {
         if (currentBudget['money'] >= gameSettings['newLinePrice']) {
             currentBudget['money'] -= gameSettings['newLinePrice'];
             newLine(currentClickedStations, gameScreen);
+            currentClickedStations.forEach(station => {
+                station.classList.remove('station-countdown');
+            })
         }
         else {
             alert('Not enough money.');
@@ -86,6 +90,9 @@ function allowUserToAddOrExpandLine(gameScreen) {
         if (currentBudget['money'] >= gameSettings['lineExpansionPrice']) {
             currentBudget['money'] -= gameSettings['lineExpansionPrice'];
             addStationToLine(currentClickedStations, gameScreen);
+            currentClickedStations.forEach(station => {
+                station.classList.remove('station-countdown');
+            })
         }
         else {
             alert('Not enough money.');
@@ -138,8 +145,24 @@ export function findNearestStation(stations, startStationName) {
 
 export function prepareStation(station) {
     const stationToPrepare = document.getElementById(`station-${station["name"]}`);
+    startStationCountdown(station, stationToPrepare)
     stationToPrepare.classList.add('allowed-station');
     stationsAllowed.push(station["name"]);
+}
+
+function startStationCountdown(station, htmlStation) {
+    htmlStation.classList.add('station-countdown');
+    htmlStation.style.animation = `makeItfadeIn ${gameSettings.maxWaitTimeForConnection}s 1s forwards`;
+    const stationTimeout = setTimeout(timeOver, (gameSettings.maxWaitTimeForConnection-5)*1000)
+    async function timeOver() {
+        console.log(`time is over for ${station["name"]}!`)
+        if (await findObjectBySpecificValue(currentStations, "name", station["name"]) != null) {
+            console.log('station added. continue');
+        }
+        else {
+            stopGame(`${station["name"]} didn't get a station in time. :(`)
+        }
+    }
 }
 
 export function markLineStations(stationList) {
