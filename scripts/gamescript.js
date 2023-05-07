@@ -89,6 +89,7 @@ export function stopGame(reason) {
 // - Stations shouldn't spawn randomly, but close to already existing stations
 // - Add Loosing Condition: Player looses if more than x people waiting for train to X
 // - Randomize Interval of Spawning Passengers (general improvement, gradual upwards trend in spawning speed)
+//   -> maybe different speeds, gradually getting more?
 // - Add Loosing Condition? (If more than ... players at a station: lost)
 // - Add Game Events: Track Breakdowns (?)
 // - Add more Achievements, Achievement Overview

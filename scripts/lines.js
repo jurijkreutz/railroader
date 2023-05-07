@@ -234,6 +234,7 @@ function initializeNextStationSetter(newTrain, lineNum) {
             }
             else {
                 newTrain.dataset.startDirection = "out";
+                newTrain.dataset.currentlyDriving = "out-to-last-station";
             }
             newTrain.dataset.onboarding = "false" 
         }, gameSettings.trainTimeAtStation);
