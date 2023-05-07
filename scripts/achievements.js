@@ -1,6 +1,6 @@
-const achievementBox = document.getElementById("achievement");
-const achievementBoxContent = document.getElementById("achievement-content");
-import { currentLines, currentStations, currentTrains, currentBudget } from "./lines.js";
+const achievementBox = document.getElementById('achievement');
+const achievementBoxContent = document.getElementById('achievement-content');
+import { currentLines, currentStations, currentTrains, currentBudget } from './lines.js';
 
 let achievementsAlreadyShown = {
     'firstLine': false,
@@ -45,7 +45,7 @@ function checkForLineNumberAchievements() {
 function checkForTrainCapacityAchievements() {
     if (!achievementsAlreadyShown['trainCompletelyFull']) {
         currentTrains.forEach(train => {
-            if (train["currentTotalPassengers"] === train["trainCapacity"]) {
+            if (train['currentTotalPassengers'] === train['trainCapacity']) {
                 showAchievementUnlocked('Crowded situation: First time that a train is completely full!');
                 achievementsAlreadyShown['trainCompletelyFull'] = true;
             }

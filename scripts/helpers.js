@@ -21,7 +21,7 @@ export async function getLineToBeExpandedFromClickedStations(currentClickedStati
     let lineToBeExpanded = null;
     currentClickedStations.forEach((station) => {
         currentLines.forEach((line => {
-            if (line["stations"].includes(station.dataset.stationName)) {
+            if (line['stations'].includes(station.dataset.stationName)) {
                 lineToBeExpanded = line;
             };
         }));
@@ -30,5 +30,5 @@ export async function getLineToBeExpandedFromClickedStations(currentClickedStati
 }
 
 export function getAllHtmlTrainObjectsByLineId(lineId) {
-    return document.querySelectorAll(`[data-line-id="${lineId}"]`);
+    return document.querySelectorAll(`[data-line-id='${lineId}']`);
 }

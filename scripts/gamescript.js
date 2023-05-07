@@ -1,12 +1,12 @@
-import { initStatisticUpdate, initPassengerHandling, initGameButtons, initStationUpdate } from "./stathandler.js";
+import { initStatisticUpdate, initPassengerHandling, initGameButtons, initStationUpdate } from './stathandler.js';
 import { putStationsOnMap,
          makeStationsClickable,
          prepareStartStation,
          findNearestStation,
-         prepareStation } from "./stationhandler.js";
+         prepareStation } from './stationhandler.js';
 
-const gameScreen = document.getElementById("gamescreen");
-const startScreen = document.getElementById("startscreen");
+const gameScreen = document.getElementById('gamescreen');
+const startScreen = document.getElementById('startscreen');
 
 export const gameSettings = {'version': 0.1,
                              'screenHeight': window.getComputedStyle(gameScreen).height,
@@ -44,7 +44,7 @@ function startGame() {
     let nearestStation = findNearestStation(stations, gameSettings.startingStation)
     prepareStation(nearestStation);
     console.log(`Your first station is ${gameSettings.startingStation.toUpperCase()}.`);
-    console.log(`The first destination of your passengers is ${nearestStation["name"].toUpperCase()}.`);
+    console.log(`The first destination of your passengers is ${nearestStation['name'].toUpperCase()}.`);
 }
 
 // Debug Mode
