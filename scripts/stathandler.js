@@ -1,4 +1,4 @@
-import { gameSettings } from "./gamescript.js";
+import { gameSettings, stopGame } from "./gamescript.js";
 import { currentLines, currentStations, currentTrains, currentBudget, addTrainToLine } from "./lines.js";
 import { findObjectBySpecificValue } from "./helpers.js";
 import { prepareStation } from "./stationhandler.js";
@@ -103,6 +103,9 @@ async function initRandomPassengerSpawning() {
         }
         randomStation["passengers"][destinationToSpawnNewPassengerFor] += 1;
         randomStation["currentTotalPassengers"] += 1;
+        if (randomStation["currentTotalPassengers"] >= gameSettings.maxPeopleAtStation) {
+            stopGame(`Reason: Overcrowding. Too many people were at ${randomStation["name"]}!`)
+        }
     }
     let passengerSpawnCounter = setSpawnSpeed();
     setTimeout(initRandomPassengerSpawning, passengerSpawnCounter);
