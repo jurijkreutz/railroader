@@ -58,12 +58,21 @@ function initStationPassengerInfo() {
                 stationCounter.innerHTML += key.substr(0,3) + ":" + currentStations[index]["passengers"][key] + "<br>";
             }
             station.innerHTML = "";
+            let stationBarContainer = document.createElement("div");
+            stationBarContainer.classList.add("station-bar-container");
             if (currentStations[index]["currentTotalPassengers"] >= (gameSettings.maxPeopleAtStation/2)) {
                 stationCounter.style = 'background-color: yellow !important';
+                stationBarContainer.style = 'display: block';
+                let stationBar = document.createElement("div");
+                stationBar.classList.add('station-bar');
+                let percentageOfMaxPeopleAtStation = currentStations[index]["currentTotalPassengers"] / gameSettings.maxPeopleAtStation * 100;
+                stationBar.style = `width: ${percentageOfMaxPeopleAtStation}%;`;
+                stationBarContainer.append(stationBar);
             }
             else {
                 stationCounter.style = 'background-color: white';
             }
+            stationCounter.appendChild(stationBarContainer);
             station.appendChild(stationName);
             station.appendChild(stationCounter);
         }

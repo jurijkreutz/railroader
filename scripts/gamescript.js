@@ -13,7 +13,7 @@ export const gameSettings = {'version': 0.1,
                              'startingStation': 'linz',
                              'timeBetweenStationSpawn': 50,
                              'maxWaitTimeForConnection': 35,
-                             'maxPeopleAtStation': 50,
+                             'maxPeopleAtStation': 20, // default: 50
                              'trainStandardCapacity': 40,
                              'trainStandardSpeed': 35,
                              'priceForOneRide': 7,
@@ -48,24 +48,23 @@ function startGame() {
 }
 
 // Debug Mode
-/*
+
 startScreen.style = 'display: none';
 startGame();
-*/
 
 // Normal Mode with Start Screen
 
-function showStartScreen() {
-    const version = document.getElementById('version');
-    version.innerText = 'Version ' + gameSettings.version;
-    const clickableButton = document.getElementById('clickable-button');
-    clickableButton.addEventListener('click', () => {
-        startGame();
-        startScreen.style = 'display: none';
-    })
-}
+// function showStartScreen() {
+//     const version = document.getElementById('version');
+//     version.innerText = 'Version ' + gameSettings.version;
+//     const clickableButton = document.getElementById('clickable-button');
+//     clickableButton.addEventListener('click', () => {
+//         startGame();
+//         startScreen.style = 'display: none';
+//     })
+// }
 
-showStartScreen();
+// showStartScreen();
 
 export function stopGame(reason) {
     const trains = document.getElementsByClassName('train');
@@ -88,6 +87,7 @@ export function stopGame(reason) {
 // - Add Story & Freestyle Mode
 // - Stations shouldn't spawn randomly, but close to already existing stations
 // - Add Loosing Condition: Player looses if more than x people waiting for train to X
+// - Show how close player is too lose at one station
 // - Randomize Interval of Spawning Passengers (general improvement, gradual upwards trend in spawning speed)
 //   -> maybe different speeds, gradually getting more?
 // - Add Loosing Condition? (If more than ... players at a station: lost)
