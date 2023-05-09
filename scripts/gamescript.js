@@ -84,11 +84,14 @@ export function stopGame(reason) {
 }
 
 // TO-DOs:
-// - Add Story & Freestyle Mode
+// - - - Very important - - -
 // - Stations shouldn't spawn randomly, but close to already existing stations
 // - Randomize Interval of Spawning Passengers (general improvement, gradual upwards trend in spawning speed)
 //   -> maybe different speeds, gradually getting more?
-// - Add Loosing Condition? (If more than ... players at a station: lost)
+// - Set prizes for line adding and line expansion
+// - Refactor
+// - - - The rest - - -
+// - Add Story & Freestyle Mode
 // - Add Game Events: Track Breakdowns (?)
 // - Add more Achievements, Achievement Overview
 // - Add check if two lines have the same ending station and user tries to expand a line from there
