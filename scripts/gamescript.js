@@ -1,4 +1,8 @@
-import { initStatisticUpdate, initPassengerHandling, initGameButtons, initStationUpdate } from './stathandler.js';
+// Start Script
+// contains game settings, stations, start & stop functions
+
+import { initStatisticUpdate, initPassengerHandling, initGameButtons } from './stathandler.js';
+import { initStationUpdate } from './stationhandler.js';
 import { putStationsOnMap,
          makeStationsClickable,
          prepareStartStation,

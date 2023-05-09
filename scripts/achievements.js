@@ -1,3 +1,6 @@
+// Achievement Script
+// contains functionality for handling & showing achievements
+
 const achievementBox = document.getElementById('achievement');
 const achievementBoxContent = document.getElementById('achievement-content');
 import { currentLines, currentStations, currentTrains, currentBudget } from './lines.js';

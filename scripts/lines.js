@@ -1,3 +1,8 @@
+// Line Script
+// contains main game objects (train objects, line objects, station objects),
+// line handling functionality (adding/expanding lines), train handling (adding trains),
+// functionality for train driving (deciding, what is the next station and driving to it)
+
 import { gameSettings } from './gamescript.js';
 import { pickUpPassengers, disembarkPassengers } from './stathandler.js';
 import { findObjectBySpecificValue, getLineToBeExpandedFromClickedStations, getAllHtmlTrainObjectsByLineId } from './helpers.js';
@@ -342,6 +347,7 @@ export async function addStationToLine(currentClickedStations, gameScreen) {
         alert('Expansion only allowed from last or first station!');
     }
 }
+
 function checkStationToExpandLineFrom(currentClickedStations, lineToBeExpanded) {
     let stationToExpandLineFrom;
     currentClickedStations.forEach((station) => {

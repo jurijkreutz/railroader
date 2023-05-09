@@ -1,7 +1,10 @@
+// Statistics Script
+// contains stat logic (passenger spawning, picking up and disembarking passengers) and
+// functionality for showing stats on user interface
+
 import { gameSettings, stopGame } from './gamescript.js';
 import { currentLines, currentStations, currentTrains, currentBudget, addTrainToLine } from './lines.js';
 import { findObjectBySpecificValue } from './helpers.js';
-import { prepareStation } from './stationhandler.js';
 import { checkForUnlockedAchievements } from './achievements.js';
 
 let moneyText = document.getElementById('money-text');
@@ -209,7 +212,6 @@ function setStationsAhead(currentTrainObject, currentLineObject, currentStationO
     }
  }
 
-
  export function initGameButtons(gameScreen) {
     buyTrainText.addEventListener('click', () => {
         if (currentBudget['money'] >= gameSettings['trainPrice']) {
@@ -230,19 +232,4 @@ function setStationsAhead(currentTrainObject, currentLineObject, currentStationO
             buyTrainText.classList.remove('button-active');
         }
     }, 50);
-}
-
-
-export function initStationUpdate(stations) {
-    setInterval(() => {
-        let randomStation = stations[Math.floor(Math.random() * stations.length)];
-        console.log(stationsAllowed);
-        while (stationsAllowed.includes(randomStation.dataset.stationName)) {
-            randomStation = stations[Math.floor(Math.random() * stations.length)];
-        }
-        let stationToAdd = {};
-        stationToAdd['name'] = randomStation.dataset.stationName;
-        console.log('station to add: ' + stationToAdd['name']);
-        prepareStation(stationToAdd);
-    }, gameSettings.timeBetweenStationSpawn*1000);
 }

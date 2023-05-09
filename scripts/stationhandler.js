@@ -1,3 +1,7 @@
+// Station Script
+// contains logic for adding stations at start, making stations clickable,
+// and station spawning + countdown
+
 import { gameSettings, stopGame } from './gamescript.js';
 import { newLine, currentLines, addStationToLine, currentStations } from './lines.js';
 import { stationsAllowed } from './stathandler.js';
@@ -11,7 +15,6 @@ export function putStationsOnMap(stationPositions, gameScreen) {
         const element = stationPositions[station];
         addStationToGameScreen(station, stationPositions[station], gameScreen);
     }
-
 }
 
 function addStationToGameScreen(name, position, gameScreen) {
@@ -146,6 +149,20 @@ export function prepareStation(station) {
     startStationCountdown(station, stationToPrepare)
     stationToPrepare.classList.add('allowed-station');
     stationsAllowed.push(station['name']);
+}
+
+export function initStationUpdate(stations) {
+    setInterval(() => {
+        let randomStation = stations[Math.floor(Math.random() * stations.length)];
+        console.log(stationsAllowed);
+        while (stationsAllowed.includes(randomStation.dataset.stationName)) {
+            randomStation = stations[Math.floor(Math.random() * stations.length)];
+        }
+        let stationToAdd = {};
+        stationToAdd['name'] = randomStation.dataset.stationName;
+        console.log('station to add: ' + stationToAdd['name']);
+        prepareStation(stationToAdd);
+    }, gameSettings.timeBetweenStationSpawn*1000);
 }
 
 function startStationCountdown(station, htmlStation) {

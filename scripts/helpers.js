@@ -1,3 +1,6 @@
+// Helper Script
+// contains helper functions (eg functions for finding objects by a certain value)
+
 export async function findObjectBySpecificValue (object, keyName, valueToFind){
     for (let objectIndex = 0; objectIndex < object.length; objectIndex++) {
         const currentValue = object[objectIndex];
