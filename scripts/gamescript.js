@@ -1,7 +1,7 @@
 // Start Script
 // contains game settings, stations, start & stop functions
 
-import { initStatisticUpdate, initPassengerHandling, initGameButtons } from './stathandler.js';
+import { initStatisticUpdate, initPassengerHandling, initGameButtons, sumPassengersFromAllLines } from './stathandler.js';
 import { initStationUpdate } from './stationhandler.js';
 import { putStationsOnMap,
          makeStationsClickable,
@@ -82,7 +82,7 @@ export function stopGame(reason) {
     startButton.style = 'display: none';
     const version = document.getElementById('version');
     version.style = 'text-shadow: 1px 1px 1px BLACK';
-    version.innerHTML = `<br>You lost!<br>${reason}`;
+    version.innerHTML = `<br>You lost!<br>${reason}<br><br>Transported Passengers: ${sumPassengersFromAllLines()}`;
     setTimeout(() => {
         window.location.reload();
     }, 9000);

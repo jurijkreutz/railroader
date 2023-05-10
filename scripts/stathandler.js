@@ -25,7 +25,7 @@ export function initStatisticUpdate() {
     }, 50);
 }
 
-function sumPassengersFromAllLines() {
+export function sumPassengersFromAllLines() {
     let passengerSum = 0;
     currentLines.forEach(line => {
         passengerSum += line['passengers']
