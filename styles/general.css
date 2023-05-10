@@ -112,6 +112,10 @@ p {
     color: rgb(201, 201, 201);
 }
 
+#buy-train {
+    background-color:#a9a9a933;
+}
+
 .button-active {
     color: black;
 }

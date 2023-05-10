@@ -119,7 +119,7 @@ function setSpawnDelay() {
     // fast increase till around 200, then slower increase
     const currentPassengerCount = sumPassengersFromAllLines();
     const maxSpawnDelay = 500;
-    const minSpawnDelay = 100;
+    const minSpawnDelay = 70;
     let spawnDelay = (maxSpawnDelay - currentPassengerCount) * gameSettings.passengerSpawningDelayFactor;
     if (spawnDelay <= 200) {
         spawnDelay = (200 - (currentPassengerCount*0.1)) * gameSettings.passengerSpawningDelayFactor;
