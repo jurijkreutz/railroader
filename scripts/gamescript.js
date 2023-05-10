@@ -19,7 +19,7 @@ export const gameSettings = {'version': 0.1,
                              'timeBetweenStationSpawn': 50, // default: 50
                              'maxWaitTimeForConnection': 35,
                              'maxPeopleAtStation': 50, // default: 50
-                             'trainStandardCapacity': 40,
+                             'trainStandardCapacity': 30,
                              'trainStandardSpeed': 35,
                              'priceForOneRide': 7,
                              'trainPrice': 800,
