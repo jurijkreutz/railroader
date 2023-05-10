@@ -116,29 +116,16 @@ async function initRandomPassengerSpawning() {
 
 function setSpawnDelay() {
     // linear spawning
-    // TODO: fast increase till around 200, then slower increase
+    // fast increase till around 200, then slower increase
     const currentPassengerCount = sumPassengersFromAllLines();
     const maxSpawnDelay = 500;
-    let spawnDelay = (maxSpawnDelay - currentPassengerCount) * gameSettings.passengerSpawningFactor;
-    if (spawnDelay <= 150) {
-        spawnDelay = 100;
+    const minSpawnDelay = 100;
+    let spawnDelay = (maxSpawnDelay - currentPassengerCount) * gameSettings.passengerSpawningDelayFactor;
+    if (spawnDelay <= 200) {
+        spawnDelay = (200 - (currentPassengerCount*0.1)) * gameSettings.passengerSpawningDelayFactor;
     }
+    spawnDelay = Math.max(minSpawnDelay, spawnDelay);
     console.log(spawnDelay);
-    // old variant:
-    // let passengerSpawnCounter = 440; 
-    // let currentPassengerCount = sumPassengersFromAllLines()
-    // if (currentPassengerCount > 300) {
-    //     passengerSpawnCounter = 100;
-    // }
-    // else if (currentPassengerCount > 200) {
-    //     passengerSpawnCounter = 320;
-    // }
-    // else if (currentPassengerCount > 100) {
-    //     passengerSpawnCounter = 360;
-    // }
-    // else if (currentPassengerCount > 50 ) {
-    //     passengerSpawnCounter = 400;
-    // }
     return spawnDelay;
 }
 

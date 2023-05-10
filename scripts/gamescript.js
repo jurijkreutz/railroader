@@ -15,7 +15,7 @@ const startScreen = document.getElementById('startscreen');
 export const gameSettings = {'version': 0.1,
                              'screenHeight': window.getComputedStyle(gameScreen).height,
                              'startingStation': 'linz',
-                             'passengerSpawningFactor': 1, // how fast the spawn speed increases 
+                             'passengerSpawningDelayFactor': 1, // the higher, the slower (should be between 1 & 2)
                              'timeBetweenStationSpawn': 50, // default: 50
                              'maxWaitTimeForConnection': 35,
                              'maxPeopleAtStation': 50, // default: 50
