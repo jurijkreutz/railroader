@@ -54,3 +54,4 @@ python -m http.server
 
 - Weird Behaviour if switching tabs (always keep website in foreground while playing)
 - Trains sometimes glitching and driving between two not-connected cities
+- Safari: 'Buy Train' Button not working
