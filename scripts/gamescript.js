@@ -15,7 +15,7 @@ const startScreen = document.getElementById('startscreen');
 export const gameSettings = {'version': 0.1,
                              'screenHeight': window.getComputedStyle(gameScreen).height,
                              'startingStation': 'linz',
-                             'timeBetweenStationSpawn': 10, // default: 50
+                             'timeBetweenStationSpawn': 50, // default: 50
                              'maxWaitTimeForConnection': 35,
                              'maxPeopleAtStation': 50, // default: 50
                              'trainStandardCapacity': 40,

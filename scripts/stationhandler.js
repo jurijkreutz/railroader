@@ -153,15 +153,21 @@ export function prepareStation(station) {
 }
 
 export function initStationUpdate(stations) {
-    console.log(stations) // html collection
-    setInterval(() => {
+    const stationSpawnInterval = setInterval(() => {
         let closeStation;
         let randomAlreadyPreparedStationName = stationsAllowed[Math.floor(Math.random() * stationsAllowed.length)];
         console.log(randomAlreadyPreparedStationName)
         closeStation = findNearestStation(stations, randomAlreadyPreparedStationName);
-        let stationToAdd = {};
-        stationToAdd['name'] = closeStation.name;
-        prepareStation(stationToAdd);
+        console.log(closeStation);
+        if (closeStation.distance == 9999) {
+            console.log('Station spawning finished.');
+            clearInterval(stationSpawnInterval);
+        }
+        else {
+            let stationToAdd = {};
+            stationToAdd['name'] = closeStation.name;
+            prepareStation(stationToAdd);
+        }
     }, gameSettings.timeBetweenStationSpawn*1000);
 }
 
