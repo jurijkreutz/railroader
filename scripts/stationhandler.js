@@ -136,7 +136,8 @@ export function findNearestStation(stations, startStationName) {
         xDistance = (xDistance < 0) ? xDistance * (-1) : xDistance;
         yDistance = (yDistance < 0) ? yDistance * (-1) : yDistance;
         let distance = xDistance + yDistance;
-        if (distance < nearestStation['distance'] && distance != 0) {
+        if  (distance < nearestStation['distance'] && distance != 0 && 
+            (!stationsAllowed.includes(station.dataset.stationName))) {
             nearestStation['distance'] = distance;
             nearestStation['name'] = station.dataset.stationName;
         }
@@ -152,15 +153,14 @@ export function prepareStation(station) {
 }
 
 export function initStationUpdate(stations) {
+    console.log(stations) // html collection
     setInterval(() => {
-        let randomStation = stations[Math.floor(Math.random() * stations.length)];
-        console.log(stationsAllowed);
-        while (stationsAllowed.includes(randomStation.dataset.stationName)) {
-            randomStation = stations[Math.floor(Math.random() * stations.length)];
-        }
+        let closeStation;
+        let randomAlreadyPreparedStationName = stationsAllowed[Math.floor(Math.random() * stationsAllowed.length)];
+        console.log(randomAlreadyPreparedStationName)
+        closeStation = findNearestStation(stations, randomAlreadyPreparedStationName);
         let stationToAdd = {};
-        stationToAdd['name'] = randomStation.dataset.stationName;
-        console.log('station to add: ' + stationToAdd['name']);
+        stationToAdd['name'] = closeStation.name;
         prepareStation(stationToAdd);
     }, gameSettings.timeBetweenStationSpawn*1000);
 }
