@@ -89,7 +89,6 @@ export function stopGame(reason) {
 
 // TO-DOs:
 // - - - Very important - - -
-// - Stations shouldn't spawn randomly, but close to already existing stations
 // - Randomize Interval of Spawning Passengers (general improvement, gradual upwards trend in spawning speed)
 //   -> maybe different speeds, gradually getting more?
 // - Set prizes for line adding and line expansion
