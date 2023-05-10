@@ -221,7 +221,7 @@ function setStationsAhead(currentTrainObject, currentLineObject, currentStationO
         }
     })
     setInterval(() => {
-        buyTrainText.innerText = 'Zug kaufen ' + gameSettings['trainPrice'];
+        buyTrainText.innerText = 'Buy train ' + gameSettings['trainPrice'];
         if (currentBudget['money'] >= gameSettings['trainPrice']) {
             buyTrainText.classList.add('button-active');
         }

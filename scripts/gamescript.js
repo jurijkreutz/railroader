@@ -21,11 +21,11 @@ export const gameSettings = {'version': 0.1,
                              'maxPeopleAtStation': 50, // default: 50
                              'trainStandardCapacity': 30,
                              'trainStandardSpeed': 35,
-                             'priceForOneRide': 7,
-                             'trainPrice': 800,
-                             'trainTimeAtStation': 2000, // default: 1000
-                             'lineExpansionPrice': 0, // default: 3000
-                             'newLinePrice': 0}; // default 6000
+                             'priceForOneRide': 10,
+                             'trainPrice': 500,
+                             'trainTimeAtStation': 2000,
+                             'lineExpansionPrice': 900,
+                             'newLinePrice': 1800}
 
 let stationPositions = {'vienna': [110, 700],
                         'graz': [290, 605],
@@ -90,11 +90,9 @@ export function stopGame(reason) {
 
 // TO-DOs:
 // - - - Very important - - -
-// - Randomize Interval of Spawning Passengers (general improvement, gradual upwards trend in spawning speed)
-//   -> maybe different speeds, gradually getting more?
-// - Set prizes for line adding and line expansion
 // - Refactor
 // - - - The rest - - -
+// - Randomize Interval of spawning (sometimes more, sometimes less while gradual increase)
 // - Add Story & Freestyle Mode
 // - Add Game Events: Track Breakdowns (?)
 // - Add more Achievements, Achievement Overview
