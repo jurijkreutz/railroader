@@ -173,7 +173,7 @@ export function initStationUpdate(stations) {
 
 function startStationCountdown(station, htmlStation) {
     htmlStation.classList.add('station-countdown');
-    htmlStation.style.animation = `makeItfadeIn ${gameSettings.maxWaitTimeForConnection}s 1s forwards`;
+    htmlStation.style.animation = `pulsating-station 900ms 3, makeItfadeIn ${gameSettings.maxWaitTimeForConnection}s 1s forwards`;
     const stationTimeout = setTimeout(timeOver, (gameSettings.maxWaitTimeForConnection-5)*1000)
     async function timeOver() {
         console.log(`time is over for ${station['name']}!`)
