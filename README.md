@@ -18,6 +18,20 @@
 <img width="1013" alt="Screenshot 2023-05-10 at 13 19 15" src="https://github.com/jurijkreutz/railroader/assets/104159382/ab8076f9-18da-44e7-bf5e-353ddf8cf914">
 <img width="1001" alt="Screenshot 2023-05-10 at 13 20 32" src="https://github.com/jurijkreutz/railroader/assets/104159382/7f0bd363-42e8-4c89-97e0-e9fa953faadb">
 
+## GIFS
+
+1. Start of the Game:
+
+![ezgif com-video-to-gif (1)](https://github.com/jurijkreutz/railroader/assets/104159382/67aafe85-b729-4677-83b7-6bb8c4e55f71)
+
+2. Extending a line and buying a second train:
+
+![ezgif com-video-to-gif (2)](https://github.com/jurijkreutz/railroader/assets/104159382/e69050e4-8220-4d5a-92df-00f3378b4fc2)
+
+3. Advanced Gameplay:
+
+![ezgif com-video-to-gif (3)](https://github.com/jurijkreutz/railroader/assets/104159382/99d97758-8c3d-4f16-8b39-aa11c14278e0)
+
 ## How to play
 
 > Since Railroader is partly built on CSS animations, always keep the Tab open while playing to avoid weird behaviour.
